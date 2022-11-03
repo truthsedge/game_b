@@ -26,7 +26,6 @@ function preload() {
 function setup() {
   createCanvas(1280, 800);
   frameRate(60);
-  //noStroke();
   stroke(200);
 
   const enemy = initEnemy();
@@ -89,7 +88,7 @@ function updateGameStateTitle() {
 function updateGameStatePlaying() {
   movePlayer();
   playerAttack();
-  //spawn enemies
+
   //defeat all enemies
   enemiesData = enemiesData.filter((enemy) => enemy.alive);
   enemySpawner();
