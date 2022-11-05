@@ -1,6 +1,7 @@
 /* exported setup preload draw keyPressed mousePressed*/
 
 const GAMESTATE_TITLE = "title";
+const GAMESTATE_WAITING = "wait";
 const GAMESTATE_PLAYING = "play";
 const GAMESTATE_ENDING = "end";
 let gameState = GAMESTATE_TITLE;
@@ -12,6 +13,11 @@ let locationY = 500;
 let playerSpeed = 5;
 let isAttacking = false;
 let isMirrored = false;
+
+// MULTIPLAYER
+let player1, player2, player3, player4;
+let me, guests;
+let readyStatus;
 
 // GAME FEEL / JUICE
 let cameraShakeAmount = 0;
@@ -39,6 +45,17 @@ let camX = 0;
 let camY = 0;
 
 function preload() {
+  partyConnect(
+    "wss://deepstream-server-1.herokuapp.com",
+    "brawler_game_0.0.5",
+    "main_1"
+  );
+
+  // Client owned, should be used by client owner
+  me = partyLoadMyShared({ role: "observer" });
+
+  // Array of of all "me", guest array with 2 or more objects. Should only read from guest
+  guests = partyLoadGuestShareds();
   // GAME_MODE_PLAYING background image
   background1 = loadImage("/images/background_grid_001.png");
 
@@ -71,6 +88,10 @@ function draw() {
       updateGameStateTitle();
       drawGameStateTitle();
       break;
+    case GAMESTATE_WAITING:
+      updateGameStateWaiting();
+      drawGameStateWaiting();
+      break;
     case GAMESTATE_PLAYING:
       updateGameStatePlaying();
       drawGameStatePlaying();
@@ -90,8 +111,42 @@ function drawGameStateTitle() {
   textAlign(CENTER, CENTER);
   fill("#FFFFFF");
   noStroke();
+  textSize(65);
+  text("2D BRAWLER", width * 0.5, height * 0.35);
   textSize(45);
   text("PRESS SPACE TO START", width * 0.5, height * 0.5);
+  pop();
+}
+
+function drawGameStateWaiting() {
+  push();
+  imageMode(CENTER);
+  fill(255, 100, 100);
+  rect(0, 0, width * 0.25, height);
+  if (player1) {
+    image(images[0], width * 0.125, height * 0.5);
+  }
+  fill(100, 255, 100);
+  rect(width * 0.25, 0, width * 0.25, height);
+  if (player2) {
+    image(images[0], width * 0.375, height * 0.5);
+  }
+  fill(100, 100, 255);
+  rect(width * 0.5, 0, width * 0.25, height);
+  if (player3) {
+    image(images[0], width * 0.625, height * 0.5);
+  }
+  fill(255, 255, 100);
+  rect(width * 0.75, 0, width * 0.25, height);
+  if (player4) {
+    image(images[0], width * 0.875, height * 0.5);
+  }
+  fill(0);
+  rect(0, 0, width, height * 0.15);
+  standardizeText();
+  fill(0);
+  text("PRESS ENTER TO START", width * 0.5, height * 0.8);
+  drawHUD();
   pop();
 }
 
@@ -129,6 +184,12 @@ function drawGameStateEnding() {
 // UPDATE GAME STATES
 function updateGameStateTitle() {
   // Players connect to the lobby
+  assignPlayers();
+  player1 = guests.find((p) => p.role === "player1");
+  player2 = guests.find((p) => p.role === "player2");
+  player3 = guests.find((p) => p.role === "player3");
+  player4 = guests.find((p) => p.role === "player4");
+
   // Each player readys up
   // **** If one player is in the lobby and is ready, automatically start game
   // **** If two or more players are in the lobby, all players must be ready bfore the game starts
@@ -136,6 +197,20 @@ function updateGameStateTitle() {
 
   // Set number of enemies left to defeat
   numEnemiesLeft = 10;
+}
+
+function updateGameStateWaiting() {
+  //if (player1?.readyStatus && player2?.readyStatus) gameState = GAMESTATE_PLAYING;
+
+  // FOR TESTING ONLY
+  // IF PLAYER 1 IS CONNECTED, ALLOW THE GAME TO START
+  // LATER VERSION WILL CHECK TO SEE IF ALL CONNECTED PLAYERS ARE READY BEFORE STARTING
+
+  if (player1) {
+    if (keyIsDown(ENTER) /*ENTER*/) {
+      gameState = GAMESTATE_PLAYING;
+    }
+  }
 }
 
 function updateGameStatePlaying() {
@@ -378,6 +453,9 @@ function keyPressed() {
   if (key == "1") {
     gameState = GAMESTATE_TITLE;
   } else if (key == " ") {
+    gameState = GAMESTATE_WAITING;
+  }
+  if (key == "2") {
     gameState = GAMESTATE_PLAYING;
   } else if (key == "3") {
     gameState = GAMESTATE_ENDING;
@@ -394,30 +472,96 @@ function keyPressed() {
 
 // UI / UX
 function drawHUD() {
-  standardizeText();
-  text(numEnemiesDefeated + " of " + numEnemiesLeft, width * 0.5, height * 0.1);
+  const p1 = guests.find((p) => p.role === "player1");
+  const p2 = guests.find((p) => p.role === "player2");
+  const p3 = guests.find((p) => p.role === "player3");
+  const p4 = guests.find((p) => p.role === "player4");
 
-  textSize(36);
+  if (gameState === GAMESTATE_PLAYING) {
+    standardizeText();
+    text(
+      numEnemiesDefeated + " of " + numEnemiesLeft,
+      width * 0.5,
+      height * 0.1
+    );
 
-  // Draw Player Status
-  text("P1", width * 0.15, height * 0.1);
-  text("P2", width * 0.3, height * 0.1);
-  text("P3", width * 0.7, height * 0.1);
-  text("P4", width * 0.85, height * 0.1);
+    textSize(36);
 
-  push();
-  textSize(20);
-  text("CONNECTED", width * 0.15, height * 0.04);
-  text("NONE", width * 0.3, height * 0.04);
-  text("NONE", width * 0.7, height * 0.04);
-  text("NONE", width * 0.85, height * 0.04);
-  pop();
+    // Draw Player Status
+    text("P1", width * 0.15, height * 0.1);
+    text("P2", width * 0.3, height * 0.1);
+    text("P3", width * 0.7, height * 0.1);
+    text("P4", width * 0.85, height * 0.1);
 
-  // Draw Player Health
-  fill(0, 200, 50);
-  ellipse(width * 0.12, height * 0.12, 20, 20);
-  ellipse(width * 0.15, height * 0.12, 20, 20);
-  ellipse(width * 0.18, height * 0.12, 20, 20);
+    push();
+    textSize(20);
+    if (p1) {
+      text("CONNECTED", width * 0.15, height * 0.04);
+    } else {
+      text("NONE", width * 0.15, height * 0.04);
+    }
+    if (p2) {
+      text("CONNECTED", width * 0.3, height * 0.04);
+    } else {
+      text("NONE", width * 0.3, height * 0.04);
+    }
+    if (p3) {
+      text("CONNECTED", width * 0.7, height * 0.04);
+    } else {
+      text("NONE", width * 0.7, height * 0.04);
+    }
+    if (p4) {
+      text("CONNECTED", width * 0.85, height * 0.04);
+    } else {
+      text("NONE", width * 0.85, height * 0.04);
+    }
+    pop();
+
+    // Draw Player Health
+    fill(0, 200, 50);
+    ellipse(width * 0.12, height * 0.12, 20, 20);
+    ellipse(width * 0.15, height * 0.12, 20, 20);
+    ellipse(width * 0.18, height * 0.12, 20, 20);
+  }
+
+  if (gameState === GAMESTATE_WAITING) {
+    push();
+    textSize(36);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    // Draw Player Status
+    text("P1", width * 0.125, height * 0.1);
+    text("P2", width * 0.375, height * 0.1);
+    text("P3", width * 0.625, height * 0.1);
+    text("P4", width * 0.875, height * 0.1);
+
+    textSize(20);
+    // Display Player 1's connection status
+    if (p1) {
+      text("CONNECTED", width * 0.125, height * 0.04);
+    } else {
+      text("NONE", width * 0.125, height * 0.04);
+    }
+
+    if (p2) {
+      text("CONNECTED", width * 0.375, height * 0.04);
+    } else {
+      text("NONE", width * 0.375, height * 0.04);
+    }
+
+    if (p3) {
+      text("CONNECTED", width * 0.625, height * 0.04);
+    } else {
+      text("NONE", width * 0.625, height * 0.04);
+    }
+
+    if (p4) {
+      text("CONNECTED", width * 0.875, height * 0.04);
+    } else {
+      text("NONE", width * 0.875, height * 0.04);
+    }
+    pop();
+  }
 }
 
 function standardizeText() {
@@ -427,7 +571,6 @@ function standardizeText() {
 }
 
 // GAME FEEL
-
 function cameraShake() {
   translate(width * 0.5, height * 0.5);
 
@@ -451,3 +594,26 @@ function rangeNoise(min, max, a = 0, b = 0, c = 0) {
 }
 
 function mousePressed() {}
+
+// MULTIPLAYER
+function assignPlayers() {
+  // if there isn't a player1
+  if (!guests.find((p) => p.role === "player1")) {
+    // find the first observer
+    const o = guests.find((p) => p.role === "observer");
+    // if thats me, take the role
+    if (o === me) o.role = "player1";
+  }
+  if (!guests.find((p) => p.role === "player2")) {
+    const o = guests.find((p) => p.role === "observer");
+    if (o === me) o.role = "player2";
+  }
+  if (!guests.find((p) => p.role === "player3")) {
+    const o = guests.find((p) => p.role === "observer");
+    if (o === me) o.role = "player3";
+  }
+  if (!guests.find((p) => p.role === "player4")) {
+    const o = guests.find((p) => p.role === "observer");
+    if (o === me) o.role = "player4";
+  }
+}
