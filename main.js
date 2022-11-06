@@ -10,7 +10,7 @@ let gameState = GAMESTATE_TITLE;
 // Player variables. Should probably change their scope later.
 let locationX = 1000;
 let locationY = 500;
-let playerSpeed = 5;
+let playerSpeed = 10;
 //let isAttacking = false;
 //let isMirrored = false;
 
@@ -603,12 +603,12 @@ function drawPlayer(p1, p2, p3, p4) {
 
 function playerAttack(p1, p2, p3, p4) {
   if (me.isAttacking === true) {
-    playerSpeed = 0;
+    playerSpeed = 0; // Prevents the player from being able to move and attack at the same time.
 
     if (frameCount % 60 === 0) {
       enemiesData.forEach((enemy) => damageEnemy(enemy, p1, p2, p3, p4));
       me.isAttacking = false;
-      playerSpeed = 5;
+      playerSpeed = 10; // Resets players speed back to default value after attacking
     }
   }
 }
