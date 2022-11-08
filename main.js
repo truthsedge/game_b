@@ -21,23 +21,20 @@ let readyStatus;
 
 // GAME FEEL / JUICE
 let cameraShakeAmount = 0;
-let background1;
+// let background1; // declared elsewhere
 
 //TEST
 //let spriteX = 0;
 //let spriteY = 0;
 
 // Sprites
-let images = [];
+const images = {};
 let frameToShow = 0;
-let player2Images;
-let player3Images;
-let player4Images;
 
 // Enemy Variables
 let spawnPoint = [300, 400, 500, 600, 700, 800, 900, 1000];
 let enemiesData = [];
-let npcImage;
+// let npcImage;
 
 // Camera
 //let camX = 0;
@@ -71,25 +68,56 @@ function preload() {
     numEnemiesLeft: 10, // How many enemies does the player need to defeat
   });
 
+  preloadImages();
+}
+
+function preloadImages() {
   // GAME_MODE_PLAYING background image
-  background1 = loadImage("/images/background_grid_001.png");
+  images.background1 = loadImage("/images/background_grid_001.png");
 
-  // Player 1 sprites
-  images = [];
-  images[0] = loadImage("/images/red_idle_000.png");
-  images[1] = loadImage("/images/red_attack_001.png");
-  images[2] = loadImage("/images/red_attack_002.png");
-  images[3] = loadImage("/images/red_attack_003.png");
-  images[4] = loadImage("/images/red_attack_004.png");
-  images[5] = loadImage("/images/red_attack_005.png");
+  // Player 1 sprites: red
+  images.p1 = {};
+  images.p1.idle = loadImage("/images/red_idle_000.png"); // formerly: images[0]
+  images.p1.attack = [];
+  images.p1.attack[0] = loadImage("/images/red_attack_001.png"); // formerly: images[1]
+  images.p1.attack[1] = loadImage("/images/red_attack_002.png"); // formerly: images[2]
+  images.p1.attack[2] = loadImage("/images/red_attack_003.png"); // formerly: images[3]
+  images.p1.attack[3] = loadImage("/images/red_attack_004.png"); // formerly: images[4]
+  images.p1.attack[4] = loadImage("/images/red_attack_005.png"); // formerly: images[5]
 
-  // Player 2 sprites
-  player2Images = loadImage("/images/green_idle_000.png");
-  player3Images = loadImage("/images/blue_idle_000.png");
-  player4Images = loadImage("/images/yellow_idle_000.png");
+  // Player 2 sprites: green
+  images.p2 = {};
+  images.p2.idle = loadImage("/images/green_idle_000.png"); // formerly: images[0]
+  images.p2.attack = [];
+  images.p2.attack[0] = loadImage("/images/green_attack_001.png"); // formerly: images[1]
+  images.p2.attack[1] = loadImage("/images/green_attack_002.png"); // formerly: images[2]
+  images.p2.attack[2] = loadImage("/images/green_attack_003.png"); // formerly: images[3]
+  images.p2.attack[3] = loadImage("/images/green_attack_004.png"); // formerly: images[4]
+  images.p2.attack[4] = loadImage("/images/green_attack_005.png"); // formerly: images[5]
+
+  // Player 3 sprites: blue
+  images.p3 = {};
+  images.p3.idle = loadImage("/images/blue_idle_000.png"); // formerly: images[0]
+  images.p3.attack = [];
+  images.p3.attack[0] = loadImage("/images/blue_attack_001.png"); // formerly: images[1]
+  images.p3.attack[1] = loadImage("/images/blue_attack_002.png"); // formerly: images[2]
+  images.p3.attack[2] = loadImage("/images/blue_attack_003.png"); // formerly: images[3]
+  images.p3.attack[3] = loadImage("/images/blue_attack_004.png"); // formerly: images[4]
+  images.p3.attack[4] = loadImage("/images/blue_attack_005.png"); // formerly: images[5]
+
+  // Player 4 sprites: yellow
+  images.p4 = {};
+  images.p4.idle = loadImage("/images/yellow_idle_000.png"); // formerly: images[0]
+  images.p4.attack = [];
+  images.p4.attack[0] = loadImage("/images/yellow_attack_001.png"); // formerly: images[1]
+  images.p4.attack[1] = loadImage("/images/yellow_attack_002.png"); // formerly: images[2]
+  images.p4.attack[2] = loadImage("/images/yellow_attack_003.png"); // formerly: images[3]
+  images.p4.attack[3] = loadImage("/images/yellow_attack_004.png"); // formerly: images[4]
+  images.p4.attack[4] = loadImage("/images/yellow_attack_005.png"); // formerly: images[5]
 
   // Enemy sprites
-  npcImage = loadImage("/images/gray_idle_000.png");
+  images.enemy = {};
+  images.enemy.idle = loadImage("/images/gray_idle_000.png"); // formerly: npcImage
 }
 
 function setup() {
@@ -153,32 +181,37 @@ function drawGameStateTitle() {
 function drawGameStateWaiting(p1, p2, p3, p4) {
   push();
   imageMode(CENTER);
+
+  //draw rectangles
   fill(255, 100, 100);
   rect(0, 0, width * 0.25, height);
-  if (p1) {
-    image(images[0], width * 0.125, height * 0.5);
-  }
   fill(100, 255, 100);
   rect(width * 0.25, 0, width * 0.25, height);
-  if (p2) {
-    image(player2Images, width * 0.375, height * 0.5);
-  }
   fill(100, 100, 255);
   rect(width * 0.5, 0, width * 0.25, height);
-  if (p3) {
-    image(player3Images, width * 0.625, height * 0.5);
-  }
   fill(255, 255, 100);
   rect(width * 0.75, 0, width * 0.25, height);
-  if (p4) {
-    image(player4Images, width * 0.875, height * 0.5);
-  }
+
+  //draw text
   fill(0);
   rect(0, 0, width, height * 0.15);
   standardizeText();
   fill(0);
   text("PRESS ENTER TO START", width * 0.5, height * 0.8);
   drawHUD(p1, p2, p3, p4);
+
+  if (p1) {
+    image(images.p1.idle, width * 0.125, height * 0.5);
+  }
+  if (p2) {
+    image(images.p2.idle, width * 0.375, height * 0.5);
+  }
+  if (p3) {
+    image(images.p3.idle, width * 0.625, height * 0.5);
+  }
+  if (p4) {
+    image(images.p4.idle, width * 0.875, height * 0.5);
+  }
   pop();
 }
 
@@ -195,8 +228,8 @@ function drawGameStatePlaying(p1, p2, p3, p4) {
     me.camX = -me.x + 578.5;
   }
 
-  image(background1, 0, 0);
-  drawPlayer(p1, p2, p3, p4);
+  image(images.background1, 0, 0);
+  drawPlayers(p1, p2, p3, p4);
   //if(p1) drawPlayer(p1);
   //if(p2) drawPlayer(p2);
 
@@ -285,38 +318,45 @@ function updateGameStateEnding() {
 function initPlayer() {}
 
 // draw player
-function drawPlayer(p1, p2, p3, p4) {
-  if (p1) {
-    drawPlayerHitbox(p1);
-    if (p1.isAttacking === false) {
-      if (p1.isMirrored === false) {
+function drawPlayers(p1, p2, p3, p4) {
+  drawPlayer(p1, images.p1);
+  drawPlayer(p2, images.p2);
+  drawPlayer(p3, images.p3);
+  drawPlayer(p4, images.p4);
+}
+
+function drawPlayer(p, pImg) {
+  if (p) {
+    drawPlayerHitbox(p);
+    if (p.isAttacking === false) {
+      if (p.isMirrored === false) {
         push();
         rectMode(CENTER);
         imageMode(CENTER);
         fill(0, 170, 220, 80);
-        rect(p1.x, p1.y - 7, 125, 175);
+        rect(p.x, p.y - 7, 125, 175);
 
-        image(images[0], p1.x, p1.y);
+        image(pImg.idle, p.x, p.y); //check images
         pop();
-      } else if (p1.isMirrored === true) {
+      } else if (p.isMirrored === true) {
         push();
         scale(-1, 1);
         rectMode(CENTER);
         imageMode(CENTER);
         fill(0, 170, 220, 80);
-        rect(-p1.x, p1.y - 7, 125, 175);
+        rect(-p.x, p.y - 7, 125, 175);
 
-        image(images[0], -p1.x, p1.y);
+        image(pImg.idle, -p.x, p.y); //check images
         pop();
       }
     }
 
     // Draw player attacking
-    if (p1.isAttacking === true) {
-      if (p1.isMirrored === false) {
+    if (p.isAttacking === true) {
+      if (p.isMirrored === false) {
         push();
-        imageMode(CENTER);
-        image(images[frameToShow], p1.x, p1.y);
+        imageMode(CENTER); // Makes sure the animation plays in the players current location.
+        image(pImg.attack[frameToShow], p.x, p.y); //check images
 
         // only change position and "frame to show"
         if (frameCount % 5 === 0) {
@@ -324,16 +364,16 @@ function drawPlayer(p1, p2, p3, p4) {
           frameToShow += 1;
 
           // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
+          if (frameToShow >= pImg.attack.length) {
             frameToShow = 0;
           }
         }
         pop();
-      } else if (p1.isMirrored === true) {
+      } else if (p.isMirrored === true) {
         push();
         scale(-1, 1);
         imageMode(CENTER);
-        image(images[frameToShow], -p1.x, p1.y);
+        image(pImg.attack[frameToShow], -p.x, p.y);
 
         // only change position and "frame to show"
         // every 10 frames
@@ -342,7 +382,8 @@ function drawPlayer(p1, p2, p3, p4) {
           frameToShow += 1;
 
           // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
+          if (frameToShow >= pImg.attack.length) {
+            //check images
             frameToShow = 0;
           }
         }
@@ -351,250 +392,16 @@ function drawPlayer(p1, p2, p3, p4) {
     }
 
     // Prevents the player from moving outside of the play area
-    if (p1.y < 400 && p1.y > -100) {
-      p1.x = constrain(p1.x, 500, 1775);
+    if (p.y < 400 && p.y > -100) {
+      p.x = constrain(p.x, 500, 1775);
     } else {
-      p1.x = constrain(p1.x, 60, 2275);
+      p.x = constrain(p.x, 60, 2275);
     }
 
-    if (p1.x > 500 && p1.x < 1775) {
-      p1.y = constrain(p1.y, 375, 1075);
+    if (p.x > 500 && p.x < 1775) {
+      p.y = constrain(p.y, 375, 1075);
     } else {
-      p1.y = constrain(p1.y, 375, 1075);
-    }
-  }
-
-  if (p2) {
-    drawPlayerHitbox(p2);
-    if (p2.isAttacking === false) {
-      if (p2.isMirrored === false) {
-        push();
-        rectMode(CENTER);
-        imageMode(CENTER);
-        fill(0, 170, 220, 80);
-        rect(p2.x, p2.y - 7, 125, 175);
-
-        image(player2Images, p2.x, p2.y);
-        pop();
-      } else if (p2.isMirrored === true) {
-        push();
-        scale(-1, 1);
-        rectMode(CENTER);
-        imageMode(CENTER);
-        fill(0, 170, 220, 80);
-        rect(-p2.x, p2.y - 7, 125, 175);
-
-        image(player2Images, -p2.x, p2.y);
-        pop();
-      }
-    }
-
-    // Draw player attacking
-    if (p2.isAttacking === true) {
-      if (p2.isMirrored === false) {
-        push();
-        imageMode(CENTER);
-        image(images[frameToShow], p2.x, p2.y);
-
-        // only change position and "frame to show"
-        if (frameCount % 5 === 0) {
-          // move to the next index in the array
-          frameToShow += 1;
-
-          // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
-            frameToShow = 0;
-          }
-        }
-        pop();
-      } else if (p2.isMirrored === true) {
-        push();
-        scale(-1, 1);
-        imageMode(CENTER);
-        image(images[frameToShow], -p2.x, p2.y);
-
-        // only change position and "frame to show"
-        // every 10 frames
-        if (frameCount % 5 === 0) {
-          // move to the next index in the array
-          frameToShow += 1;
-
-          // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
-            frameToShow = 0;
-          }
-        }
-        pop();
-      }
-    }
-
-    // Prevents the player from moving outside of the play area
-    if (p2.y < 400 && p2.y > -100) {
-      p2.x = constrain(p2.x, 500, 1775);
-    } else {
-      p2.x = constrain(p2.x, 60, 2275);
-    }
-
-    if (p2.x > 500 && p2.x < 1775) {
-      p2.y = constrain(p2.y, 375, 1075);
-    } else {
-      p2.y = constrain(p2.y, 375, 1075);
-    }
-  }
-
-  if (p3) {
-    drawPlayerHitbox(p3);
-    if (p3.isAttacking === false) {
-      if (p3.isMirrored === false) {
-        push();
-        rectMode(CENTER);
-        imageMode(CENTER);
-        fill(0, 170, 220, 80);
-        rect(p3.x, p3.y - 7, 125, 175);
-
-        image(player3Images, p3.x, p3.y);
-        pop();
-      } else if (p3.isMirrored === true) {
-        push();
-        scale(-1, 1);
-        rectMode(CENTER);
-        imageMode(CENTER);
-        fill(0, 170, 220, 80);
-        rect(-p3.x, p3.y - 7, 125, 175);
-
-        image(player3Images, -p3.x, p3.y);
-        pop();
-      }
-    }
-
-    // Draw player attacking
-    if (p3.isAttacking === true) {
-      if (p3.isMirrored === false) {
-        push();
-        imageMode(CENTER);
-        image(images[frameToShow], p3.x, p3.y);
-
-        // only change position and "frame to show"
-        if (frameCount % 5 === 0) {
-          // move to the next index in the array
-          frameToShow += 1;
-
-          // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
-            frameToShow = 0;
-          }
-        }
-        pop();
-      } else if (p3.isMirrored === true) {
-        push();
-        scale(-1, 1);
-        imageMode(CENTER);
-        image(images[frameToShow], -p3.x, p3.y);
-
-        // only change position and "frame to show"
-        // every 10 frames
-        if (frameCount % 5 === 0) {
-          // move to the next index in the array
-          frameToShow += 1;
-
-          // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
-            frameToShow = 0;
-          }
-        }
-        pop();
-      }
-    }
-
-    // Prevents the player from moving outside of the play area
-    if (p3.y < 400 && p3.y > -100) {
-      p3.x = constrain(p3.x, 500, 1775);
-    } else {
-      p3.x = constrain(p3.x, 60, 2275);
-    }
-
-    if (p3.x > 500 && p3.x < 1775) {
-      p3.y = constrain(p3.y, 375, 1075);
-    } else {
-      p3.y = constrain(p3.y, 375, 1075);
-    }
-  }
-
-  if (p4) {
-    drawPlayerHitbox(p4);
-    if (p4.isAttacking === false) {
-      if (p4.isMirrored === false) {
-        push();
-        rectMode(CENTER);
-        imageMode(CENTER);
-        fill(0, 170, 220, 80);
-        rect(p4.x, p4.y - 7, 125, 175);
-
-        image(player4Images, p4.x, p4.y);
-        pop();
-      } else if (p4.isMirrored === true) {
-        push();
-        scale(-1, 1);
-        rectMode(CENTER);
-        imageMode(CENTER);
-        fill(0, 170, 220, 80);
-        rect(-p4.x, p4.y - 7, 125, 175);
-
-        image(player4Images, -p4.x, p4.y);
-        pop();
-      }
-    }
-
-    // Draw player attacking
-    if (p4.isAttacking === true) {
-      if (p4.isMirrored === false) {
-        push();
-        imageMode(CENTER);
-        image(images[frameToShow], p4.x, p4.y);
-
-        // only change position and "frame to show"
-        if (frameCount % 5 === 0) {
-          // move to the next index in the array
-          frameToShow += 1;
-
-          // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
-            frameToShow = 0;
-          }
-        }
-        pop();
-      } else if (p4.isMirrored === true) {
-        push();
-        scale(-1, 1);
-        imageMode(CENTER);
-        image(images[frameToShow], -p4.x, p4.y);
-
-        // only change position and "frame to show"
-        // every 10 frames
-        if (frameCount % 5 === 0) {
-          // move to the next index in the array
-          frameToShow += 1;
-
-          // keep the frame index within the range 0 to 8
-          if (frameToShow >= images.length) {
-            frameToShow = 0;
-          }
-        }
-        pop();
-      }
-    }
-
-    // Prevents the player from moving outside of the play area
-    if (p4.y < 400 && p4.y > -100) {
-      p4.x = constrain(p4.x, 500, 1775);
-    } else {
-      p4.x = constrain(p4.x, 60, 2275);
-    }
-
-    if (p4.x > 500 && p4.x < 1775) {
-      p4.y = constrain(p4.y, 375, 1075);
-    } else {
-      p4.y = constrain(p4.y, 375, 1075);
+      p.y = constrain(p.y, 375, 1075);
     }
   }
 }
@@ -648,7 +455,7 @@ function drawEnemy(enemy) {
   push();
   rectMode(CENTER);
   imageMode(CENTER);
-  image(npcImage, enemy.x, enemy.y);
+  image(images.enemy.idle, enemy.x, enemy.y);
   fill(150, 150, 150, 80);
   rect(enemy.x, enemy.y, 125, 175);
   pop();
@@ -744,6 +551,7 @@ function keyPressed() {
   } else if (keyCode === ESCAPE) {
     if (gameState === GAMESTATE_ENDING) {
       //gameState = GAMESTATE_TITLE;
+      shared.numEnemiesDefeated = 0; //  Initializes the number enemies defated to zero so that the game can restart properly.
       location.reload();
     }
   }
