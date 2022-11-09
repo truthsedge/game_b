@@ -43,7 +43,7 @@ let enemiesData = [];
 function preload() {
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
-    "brawler_game_0.0.5",
+    "brawler_game_0.0.5_rkrivera",
     "main_1"
   );
 
@@ -73,51 +73,51 @@ function preload() {
 
 function preloadImages() {
   // GAME_MODE_PLAYING background image
-  images.background1 = loadImage("/images/background_grid_001.png");
+  images.background1 = loadImage("./images/background_grid_001.png");
 
   // Player 1 sprites: red
   images.p1 = {};
-  images.p1.idle = loadImage("/images/red_idle_000.png"); // formerly: images[0]
+  images.p1.idle = loadImage(".images/red_idle_000.png"); // formerly: images[0]
   images.p1.attack = [];
   images.p1.attack[0] = loadImage("/images/red_attack_001.png"); // formerly: images[1]
-  images.p1.attack[1] = loadImage("/images/red_attack_002.png"); // formerly: images[2]
-  images.p1.attack[2] = loadImage("/images/red_attack_003.png"); // formerly: images[3]
-  images.p1.attack[3] = loadImage("/images/red_attack_004.png"); // formerly: images[4]
-  images.p1.attack[4] = loadImage("/images/red_attack_005.png"); // formerly: images[5]
+  images.p1.attack[1] = loadImage("./images/red_attack_002.png"); // formerly: images[2]
+  images.p1.attack[2] = loadImage("./images/red_attack_003.png"); // formerly: images[3]
+  images.p1.attack[3] = loadImage("./images/red_attack_004.png"); // formerly: images[4]
+  images.p1.attack[4] = loadImage("./images/red_attack_005.png"); // formerly: images[5]
 
   // Player 2 sprites: green
   images.p2 = {};
-  images.p2.idle = loadImage("/images/green_idle_000.png"); // formerly: images[0]
+  images.p2.idle = loadImage("./images/green_idle_000.png"); // formerly: images[0]
   images.p2.attack = [];
-  images.p2.attack[0] = loadImage("/images/green_attack_001.png"); // formerly: images[1]
-  images.p2.attack[1] = loadImage("/images/green_attack_002.png"); // formerly: images[2]
-  images.p2.attack[2] = loadImage("/images/green_attack_003.png"); // formerly: images[3]
-  images.p2.attack[3] = loadImage("/images/green_attack_004.png"); // formerly: images[4]
-  images.p2.attack[4] = loadImage("/images/green_attack_005.png"); // formerly: images[5]
+  images.p2.attack[0] = loadImage("./images/green_attack_001.png"); // formerly: images[1]
+  images.p2.attack[1] = loadImage("./images/green_attack_002.png"); // formerly: images[2]
+  images.p2.attack[2] = loadImage("./images/green_attack_003.png"); // formerly: images[3]
+  images.p2.attack[3] = loadImage("./images/green_attack_004.png"); // formerly: images[4]
+  images.p2.attack[4] = loadImage("./images/green_attack_005.png"); // formerly: images[5]
 
   // Player 3 sprites: blue
   images.p3 = {};
-  images.p3.idle = loadImage("/images/blue_idle_000.png"); // formerly: images[0]
+  images.p3.idle = loadImage("./images/blue_idle_000.png"); // formerly: images[0]
   images.p3.attack = [];
-  images.p3.attack[0] = loadImage("/images/blue_attack_001.png"); // formerly: images[1]
-  images.p3.attack[1] = loadImage("/images/blue_attack_002.png"); // formerly: images[2]
-  images.p3.attack[2] = loadImage("/images/blue_attack_003.png"); // formerly: images[3]
-  images.p3.attack[3] = loadImage("/images/blue_attack_004.png"); // formerly: images[4]
-  images.p3.attack[4] = loadImage("/images/blue_attack_005.png"); // formerly: images[5]
+  images.p3.attack[0] = loadImage("./images/blue_attack_001.png"); // formerly: images[1]
+  images.p3.attack[1] = loadImage("./images/blue_attack_002.png"); // formerly: images[2]
+  images.p3.attack[2] = loadImage("./images/blue_attack_003.png"); // formerly: images[3]
+  images.p3.attack[3] = loadImage("./images/blue_attack_004.png"); // formerly: images[4]
+  images.p3.attack[4] = loadImage("./images/blue_attack_005.png"); // formerly: images[5]
 
   // Player 4 sprites: yellow
   images.p4 = {};
-  images.p4.idle = loadImage("/images/yellow_idle_000.png"); // formerly: images[0]
+  images.p4.idle = loadImage("./images/yellow_idle_000.png"); // formerly: images[0]
   images.p4.attack = [];
-  images.p4.attack[0] = loadImage("/images/yellow_attack_001.png"); // formerly: images[1]
-  images.p4.attack[1] = loadImage("/images/yellow_attack_002.png"); // formerly: images[2]
-  images.p4.attack[2] = loadImage("/images/yellow_attack_003.png"); // formerly: images[3]
-  images.p4.attack[3] = loadImage("/images/yellow_attack_004.png"); // formerly: images[4]
-  images.p4.attack[4] = loadImage("/images/yellow_attack_005.png"); // formerly: images[5]
+  images.p4.attack[0] = loadImage("./images/yellow_attack_001.png"); // formerly: images[1]
+  images.p4.attack[1] = loadImage("./images/yellow_attack_002.png"); // formerly: images[2]
+  images.p4.attack[2] = loadImage("./images/yellow_attack_003.png"); // formerly: images[3]
+  images.p4.attack[3] = loadImage("./images/yellow_attack_004.png"); // formerly: images[4]
+  images.p4.attack[4] = loadImage("./images/yellow_attack_005.png"); // formerly: images[5]
 
   // Enemy sprites
   images.enemy = {};
-  images.enemy.idle = loadImage("/images/gray_idle_000.png"); // formerly: npcImage
+  images.enemy.idle = loadImage("./images/gray_idle_000.png"); // formerly: npcImage
 }
 
 function setup() {
