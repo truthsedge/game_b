@@ -73,51 +73,51 @@ function preload() {
 
 function preloadImages() {
   // GAME_MODE_PLAYING background image
-  images.background1 = loadImage("/images/background_grid_001.png");
+  images.background1 = loadImage("./images/background_grid_001.png");
 
   // Player 1 sprites: red
   images.p1 = {};
-  images.p1.idle = loadImage("/images/red_idle_000.png"); // formerly: images[0]
+  images.p1.idle = loadImage("./images/red_idle_000.png"); // formerly: images[0]
   images.p1.attack = [];
-  images.p1.attack[0] = loadImage("/images/red_attack_001.png"); // formerly: images[1]
-  images.p1.attack[1] = loadImage("/images/red_attack_002.png"); // formerly: images[2]
-  images.p1.attack[2] = loadImage("/images/red_attack_003.png"); // formerly: images[3]
-  images.p1.attack[3] = loadImage("/images/red_attack_004.png"); // formerly: images[4]
-  images.p1.attack[4] = loadImage("/images/red_attack_005.png"); // formerly: images[5]
+  images.p1.attack[0] = loadImage("./images/red_attack_001.png"); // formerly: images[1]
+  images.p1.attack[1] = loadImage("./images/red_attack_002.png"); // formerly: images[2]
+  images.p1.attack[2] = loadImage("./images/red_attack_003.png"); // formerly: images[3]
+  images.p1.attack[3] = loadImage("./images/red_attack_004.png"); // formerly: images[4]
+  images.p1.attack[4] = loadImage("./images/red_attack_005.png"); // formerly: images[5]
 
   // Player 2 sprites: green
   images.p2 = {};
-  images.p2.idle = loadImage("/images/green_idle_000.png"); // formerly: images[0]
+  images.p2.idle = loadImage("./images/green_idle_000.png"); // formerly: images[0]
   images.p2.attack = [];
-  images.p2.attack[0] = loadImage("/images/green_attack_001.png"); // formerly: images[1]
-  images.p2.attack[1] = loadImage("/images/green_attack_002.png"); // formerly: images[2]
-  images.p2.attack[2] = loadImage("/images/green_attack_003.png"); // formerly: images[3]
-  images.p2.attack[3] = loadImage("/images/green_attack_004.png"); // formerly: images[4]
-  images.p2.attack[4] = loadImage("/images/green_attack_005.png"); // formerly: images[5]
+  images.p2.attack[0] = loadImage("./images/green_attack_001.png"); // formerly: images[1]
+  images.p2.attack[1] = loadImage("./images/green_attack_002.png"); // formerly: images[2]
+  images.p2.attack[2] = loadImage("./images/green_attack_003.png"); // formerly: images[3]
+  images.p2.attack[3] = loadImage("./images/green_attack_004.png"); // formerly: images[4]
+  images.p2.attack[4] = loadImage("./images/green_attack_005.png"); // formerly: images[5]
 
   // Player 3 sprites: blue
   images.p3 = {};
-  images.p3.idle = loadImage("/images/blue_idle_000.png"); // formerly: images[0]
+  images.p3.idle = loadImage("./images/blue_idle_000.png"); // formerly: images[0]
   images.p3.attack = [];
-  images.p3.attack[0] = loadImage("/images/blue_attack_001.png"); // formerly: images[1]
-  images.p3.attack[1] = loadImage("/images/blue_attack_002.png"); // formerly: images[2]
-  images.p3.attack[2] = loadImage("/images/blue_attack_003.png"); // formerly: images[3]
-  images.p3.attack[3] = loadImage("/images/blue_attack_004.png"); // formerly: images[4]
-  images.p3.attack[4] = loadImage("/images/blue_attack_005.png"); // formerly: images[5]
+  images.p3.attack[0] = loadImage("./images/blue_attack_001.png"); // formerly: images[1]
+  images.p3.attack[1] = loadImage("./images/blue_attack_002.png"); // formerly: images[2]
+  images.p3.attack[2] = loadImage("./images/blue_attack_003.png"); // formerly: images[3]
+  images.p3.attack[3] = loadImage("./images/blue_attack_004.png"); // formerly: images[4]
+  images.p3.attack[4] = loadImage("./images/blue_attack_005.png"); // formerly: images[5]
 
   // Player 4 sprites: yellow
   images.p4 = {};
-  images.p4.idle = loadImage("/images/yellow_idle_000.png"); // formerly: images[0]
+  images.p4.idle = loadImage("./images/yellow_idle_000.png"); // formerly: images[0]
   images.p4.attack = [];
-  images.p4.attack[0] = loadImage("/images/yellow_attack_001.png"); // formerly: images[1]
-  images.p4.attack[1] = loadImage("/images/yellow_attack_002.png"); // formerly: images[2]
-  images.p4.attack[2] = loadImage("/images/yellow_attack_003.png"); // formerly: images[3]
-  images.p4.attack[3] = loadImage("/images/yellow_attack_004.png"); // formerly: images[4]
-  images.p4.attack[4] = loadImage("/images/yellow_attack_005.png"); // formerly: images[5]
+  images.p4.attack[0] = loadImage("./images/yellow_attack_001.png"); // formerly: images[1]
+  images.p4.attack[1] = loadImage("./images/yellow_attack_002.png"); // formerly: images[2]
+  images.p4.attack[2] = loadImage("./images/yellow_attack_003.png"); // formerly: images[3]
+  images.p4.attack[3] = loadImage("./images/yellow_attack_004.png"); // formerly: images[4]
+  images.p4.attack[4] = loadImage("./images/yellow_attack_005.png"); // formerly: images[5]
 
   // Enemy sprites
   images.enemy = {};
-  images.enemy.idle = loadImage("/images/gray_idle_000.png"); // formerly: npcImage
+  images.enemy.idle = loadImage("./images/gray_idle_000.png"); // formerly: npcImage
 }
 
 function setup() {
@@ -574,61 +574,7 @@ function drawHUD(p1, p2, p3, p4) {
     text("P3", width * 0.7, height * 0.1);
     text("P4", width * 0.85, height * 0.1);
 
-    push();
-    textSize(20);
-    if (p1) {
-      text("CONNECTED", width * 0.15, height * 0.04);
-
-      // Draw Player 1 Health
-      push();
-      fill(0, 200, 50);
-      ellipse(width * 0.12, height * 0.12, 20, 20);
-      ellipse(width * 0.15, height * 0.12, 20, 20);
-      ellipse(width * 0.18, height * 0.12, 20, 20);
-      pop();
-    } else {
-      text("NONE", width * 0.15, height * 0.04);
-    }
-    if (p2) {
-      text("CONNECTED", width * 0.3, height * 0.04);
-
-      // Draw Player 2 Health
-      push();
-      fill(0, 200, 50);
-      ellipse(width * 0.27, height * 0.12, 20, 20);
-      ellipse(width * 0.3, height * 0.12, 20, 20);
-      ellipse(width * 0.33, height * 0.12, 20, 20);
-      pop();
-    } else {
-      text("NONE", width * 0.3, height * 0.04);
-    }
-    if (p3) {
-      text("CONNECTED", width * 0.7, height * 0.04);
-
-      // Draw Player 3 Health
-      push();
-      fill(0, 200, 50);
-      ellipse(width * 0.67, height * 0.12, 20, 20);
-      ellipse(width * 0.7, height * 0.12, 20, 20);
-      ellipse(width * 0.73, height * 0.12, 20, 20);
-      pop();
-    } else {
-      text("NONE", width * 0.7, height * 0.04);
-    }
-    if (p4) {
-      text("CONNECTED", width * 0.85, height * 0.04);
-
-      // Draw Player 3 Health
-      push();
-      fill(0, 200, 50);
-      ellipse(width * 0.82, height * 0.12, 20, 20);
-      ellipse(width * 0.85, height * 0.12, 20, 20);
-      ellipse(width * 0.88, height * 0.12, 20, 20);
-      pop();
-    } else {
-      text("NONE", width * 0.85, height * 0.04);
-    }
-    pop();
+    drawPlayerHealth();
   }
 
   if (gameState === GAMESTATE_WAITING) {
@@ -643,7 +589,15 @@ function drawHUD(p1, p2, p3, p4) {
     text("P3", width * 0.625, height * 0.1);
     text("P4", width * 0.875, height * 0.1);
 
+    // Draw Player Health
+    push();
     textSize(20);
+    drawPlayerHealth(p1, 0.15, 0.12, 0.15, 0.18);
+    drawPlayerHealth(p2, 0.3, 0.27, 0.3, 0.33);
+    drawPlayerHealth(p3, 0.7, 0.67, 0.7, 0.73);
+    drawPlayerHealth(p4, 0.85, 0.82, 0.85, 0.88);
+    pop();
+
     // Display Player 1's connection status
     if (p1) {
       text("CONNECTED", width * 0.125, height * 0.04);
@@ -669,6 +623,21 @@ function drawHUD(p1, p2, p3, p4) {
       text("NONE", width * 0.875, height * 0.04);
     }
     pop();
+  }
+}
+
+function drawPlayerHealth(p, xWords, x1, x2, x3) {
+  if (p) {
+    text("CONNECTED", width * xWords, height * 0.04);
+
+    push();
+    fill(0, 200, 50);
+    ellipse(width * x1, height * 0.12, 20, 20);
+    ellipse(width * x2, height * 0.12, 20, 20);
+    ellipse(width * x3, height * 0.12, 20, 20);
+    pop();
+  } else {
+    text("NONE", width * xWords, height * 0.04);
   }
 }
 

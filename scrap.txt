@@ -1,0 +1,115 @@
+function drawHUD(p1, p2, p3, p4) {
+  if (gameState === GAMESTATE_PLAYING) {
+    standardizeText();
+    text(
+      shared.numEnemiesDefeated + " of " + shared.numEnemiesLeft,
+      width * 0.5,
+      height * 0.1
+    );
+
+    textSize(36);
+
+    // Draw Player Status
+    text("P1", width * 0.15, height * 0.1);
+    text("P2", width * 0.3, height * 0.1);
+    text("P3", width * 0.7, height * 0.1);
+    text("P4", width * 0.85, height * 0.1);
+
+    push();
+    textSize(20);
+    if (p1) {
+      text("CONNECTED", width * 0.15, height * 0.04);
+
+      // Draw Player 1 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.12, height * 0.12, 20, 20);
+      ellipse(width * 0.15, height * 0.12, 20, 20);
+      ellipse(width * 0.18, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.15, height * 0.04);
+    }
+    
+    if (p2) {
+      text("CONNECTED", width * 0.3, height * 0.04);
+
+      // Draw Player 2 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.27, height * 0.12, 20, 20);
+      ellipse(width * 0.3, height * 0.12, 20, 20);
+      ellipse(width * 0.33, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.3, height * 0.04);
+    }
+    if (p3) {
+      text("CONNECTED", width * 0.7, height * 0.04);
+
+      // Draw Player 3 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.67, height * 0.12, 20, 20);
+      ellipse(width * 0.7, height * 0.12, 20, 20);
+      ellipse(width * 0.73, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.7, height * 0.04);
+    }
+    if (p4) {
+      text("CONNECTED", width * 0.85, height * 0.04);
+
+      // Draw Player 3 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.82, height * 0.12, 20, 20);
+      ellipse(width * 0.85, height * 0.12, 20, 20);
+      ellipse(width * 0.88, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.85, height * 0.04);
+    }
+    pop();
+  }
+
+  if (gameState === GAMESTATE_WAITING) {
+    push();
+    textSize(36);
+    fill(255);
+    textAlign(CENTER, CENTER);
+
+    // Draw Player Status
+    text("P1", width * 0.125, height * 0.1);
+    text("P2", width * 0.375, height * 0.1);
+    text("P3", width * 0.625, height * 0.1);
+    text("P4", width * 0.875, height * 0.1);
+
+    textSize(20);
+    // Display Player 1's connection status
+    if (p1) {
+      text("CONNECTED", width * 0.125, height * 0.04);
+    } else {
+      text("NONE", width * 0.125, height * 0.04);
+    }
+
+    if (p2) {
+      text("CONNECTED", width * 0.375, height * 0.04);
+    } else {
+      text("NONE", width * 0.375, height * 0.04);
+    }
+
+    if (p3) {
+      text("CONNECTED", width * 0.625, height * 0.04);
+    } else {
+      text("NONE", width * 0.625, height * 0.04);
+    }
+
+    if (p4) {
+      text("CONNECTED", width * 0.875, height * 0.04);
+    } else {
+      text("NONE", width * 0.875, height * 0.04);
+    }
+    pop();
+  }
+}
