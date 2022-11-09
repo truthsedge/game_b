@@ -42,8 +42,8 @@ let spawnPoint = [300, 400, 500, 600, 700, 800, 900, 1000];
 function preload() {
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
-    "brawler_game_0.0.5_rkrivera",
-    "main_1"
+    "brawler_game_0.0.6",
+    "main"
   );
 
   // Client owned, should be used by client owner
