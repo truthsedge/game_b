@@ -43,7 +43,7 @@ let enemiesData = [];
 function preload() {
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
-    "brawler_game_0.0.5_rkrivera",
+    "brawler_game_0.0.5",
     "main_1"
   );
 
@@ -79,7 +79,7 @@ function preloadImages() {
   images.p1 = {};
   images.p1.idle = loadImage(".images/red_idle_000.png"); // formerly: images[0]
   images.p1.attack = [];
-  images.p1.attack[0] = loadImage("/images/red_attack_001.png"); // formerly: images[1]
+  images.p1.attack[0] = loadImage("./images/red_attack_001.png"); // formerly: images[1]
   images.p1.attack[1] = loadImage("./images/red_attack_002.png"); // formerly: images[2]
   images.p1.attack[2] = loadImage("./images/red_attack_003.png"); // formerly: images[3]
   images.p1.attack[3] = loadImage("./images/red_attack_004.png"); // formerly: images[4]
