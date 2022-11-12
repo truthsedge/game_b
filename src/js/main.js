@@ -32,6 +32,7 @@ Object.assign(window, {
   draw,
   setup,
   mousePressed,
+  keyPressed,
   drawHUD,
 });
 
@@ -86,6 +87,10 @@ function draw() {
 
 function mousePressed() {
   currentScene?.mousePressed?.();
+}
+
+function keyPressed() {
+  currentScene?.keyPressed?.();
 }
 
 export function changeScene(newScene) {
