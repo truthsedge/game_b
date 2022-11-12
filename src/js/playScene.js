@@ -20,10 +20,6 @@ let shared_enemies;
 // Player variables. Should probably change their scope later.
 let playerSpeed = 10;
 
-// MULTIPLAYER
-let player1, player2, player3, player4;
-let readyStatus;
-
 // GAME FEEL / JUICE
 let cameraShakeAmount = 0;
 // let background1; // declared elsewhere
@@ -88,8 +84,7 @@ export function update() {
   enemySpawner();
 
   if (shared.numEnemiesDefeated >= 10) {
-    changeScene(scenes.title);
-    shared.numEnemiesDefeated = 0; //  Initializes the number enemies defated to zero so that the game can restart properly.
+    changeScene(scenes.end);
   }
 }
 

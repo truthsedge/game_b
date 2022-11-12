@@ -7,6 +7,7 @@
 import * as titleScene from "./titleScene.js";
 import * as lobbyScene from "./lobbyScene.js";
 import * as playScene from "./playScene.js";
+import * as endScene from "./endScene.js";
 
 // the scene being displayed
 let currentScene;
@@ -16,6 +17,7 @@ export const scenes = {
   title: titleScene,
   lobby: lobbyScene,
   play: playScene,
+  end: endScene,
 };
 
 // Globals
