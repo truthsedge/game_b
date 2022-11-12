@@ -42,7 +42,7 @@ let spawnPoint = [300, 400, 500, 600, 700, 800, 900, 1000];
 function preload() {
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
-    "brawler_game_0.0.6",
+    "brawler_game_0.0.7",
     "main"
   );
 
@@ -136,10 +136,6 @@ function setup() {
 
 function draw() {
   assignObserversToRoles();
-  player1 = guests.find((p) => p.role === "player1");
-  player2 = guests.find((p) => p.role === "player2");
-  player3 = guests.find((p) => p.role === "player3");
-  player4 = guests.find((p) => p.role === "player4");
 
   const p1 = guests.find((p) => p.role === "player1");
   const p2 = guests.find((p) => p.role === "player2");
