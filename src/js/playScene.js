@@ -74,6 +74,7 @@ export function update() {
 
   movePlayer(p1, p2, p3, p4);
   playerAttack(p1, p2, p3, p4);
+  // damagePlayer();
 
   //defeat all enemies
   shared_enemies.enemiesData = shared_enemies.enemiesData.filter(
@@ -346,6 +347,8 @@ function drawEnemy(enemy) {
   const p3 = guests.find((p) => p.role === "player3");
   const p4 = guests.find((p) => p.role === "player4");
 
+  // Was trying to sort guests.x to find the one closest to enemy.x for a targetX value
+  // targetX is meant to replace p1.x down below
   // let targetX = guests.reduce((a, b) => {
   //   let aDiff = Math.abs(a - enemy.x);
   //   let bDiff = Math.abs(b - enemy.x);
@@ -426,6 +429,15 @@ function damageEnemy(enemy, p1, p2, p3, p4) {
     }
   }
 }
+
+// // Check for playeer damaged
+// function damagePlayer(enemy) {
+//   if (enemy.x === p1.x && enemy.y === p1.y) {
+//     p1.lives--;
+//     //  updatePlayerLives();
+//     console.log(p1.x);
+//   }
+// }
 
 // Respawn Enemy
 function enemySpawner() {

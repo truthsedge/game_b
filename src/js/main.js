@@ -68,6 +68,7 @@ function setup() {
     isAttacking: false,
     camX: 0,
     camY: 0,
+    lives: 3,
   });
 
   // note: object.values() returns an array of a given objects own property values
