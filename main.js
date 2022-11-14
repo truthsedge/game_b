@@ -76,58 +76,62 @@ function preload() {
 
 function preloadImages() {
   // GAME_MODE_PLAYING background image
-  images.background1 = loadImage("./images/background_grid_001.png");
+  images.background1 = loadImage("./assets/background_grid_001.png");
 
   // Player 1 sprites: red
   images.p1 = {};
-  images.p1.idle = loadImage("./images/red_idle_000.png"); // formerly: images[0]
+  images.p1.idle = loadImage("./assets/red_idle_000.png"); // formerly: images[0]
   images.p1.attack = [];
-  images.p1.attack[0] = loadImage("./images/red_attack_001.png"); // formerly: images[1]
-  images.p1.attack[1] = loadImage("./images/red_attack_002.png"); // formerly: images[2]
-  images.p1.attack[2] = loadImage("./images/red_attack_003.png"); // formerly: images[3]
-  images.p1.attack[3] = loadImage("./images/red_attack_004.png"); // formerly: images[4]
-  images.p1.attack[4] = loadImage("./images/red_attack_005.png"); // formerly: images[5]
+  images.p1.attack[0] = loadImage("./assets/red_attack_001.png"); // formerly: images[1]
+  images.p1.attack[1] = loadImage("./assets/red_attack_002.png"); // formerly: images[2]
+  images.p1.attack[2] = loadImage("./assets/red_attack_003.png"); // formerly: images[3]
+  images.p1.attack[3] = loadImage("./assets/red_attack_004.png"); // formerly: images[4]
+  images.p1.attack[4] = loadImage("./assets/red_attack_005.png"); // formerly: images[5]
 
   // Player 2 sprites: green
   images.p2 = {};
-  images.p2.idle = loadImage("./images/green_idle_000.png"); // formerly: images[0]
+  images.p2.idle = loadImage("./assets/green_idle_000.png"); // formerly: images[0]
   images.p2.attack = [];
-  images.p2.attack[0] = loadImage("./images/green_attack_001.png"); // formerly: images[1]
-  images.p2.attack[1] = loadImage("./images/green_attack_002.png"); // formerly: images[2]
-  images.p2.attack[2] = loadImage("./images/green_attack_003.png"); // formerly: images[3]
-  images.p2.attack[3] = loadImage("./images/green_attack_004.png"); // formerly: images[4]
-  images.p2.attack[4] = loadImage("./images/green_attack_005.png"); // formerly: images[5]
+  images.p2.attack[0] = loadImage("./assets/green_attack_001.png"); // formerly: images[1]
+  images.p2.attack[1] = loadImage("./assets/green_attack_002.png"); // formerly: images[2]
+  images.p2.attack[2] = loadImage("./assets/green_attack_003.png"); // formerly: images[3]
+  images.p2.attack[3] = loadImage("./assets/green_attack_004.png"); // formerly: images[4]
+  images.p2.attack[4] = loadImage("./assets/green_attack_005.png"); // formerly: images[5]
 
   // Player 3 sprites: blue
   images.p3 = {};
-  images.p3.idle = loadImage("./images/blue_idle_000.png"); // formerly: images[0]
+  images.p3.idle = loadImage("./assets/blue_idle_000.png"); // formerly: images[0]
   images.p3.attack = [];
-  images.p3.attack[0] = loadImage("./images/blue_attack_001.png"); // formerly: images[1]
-  images.p3.attack[1] = loadImage("./images/blue_attack_002.png"); // formerly: images[2]
-  images.p3.attack[2] = loadImage("./images/blue_attack_003.png"); // formerly: images[3]
-  images.p3.attack[3] = loadImage("./images/blue_attack_004.png"); // formerly: images[4]
-  images.p3.attack[4] = loadImage("./images/blue_attack_005.png"); // formerly: images[5]
+  images.p3.attack[0] = loadImage("./assets/blue_attack_001.png"); // formerly: images[1]
+  images.p3.attack[1] = loadImage("./assets/blue_attack_002.png"); // formerly: images[2]
+  images.p3.attack[2] = loadImage("./assets/blue_attack_003.png"); // formerly: images[3]
+  images.p3.attack[3] = loadImage("./assets/blue_attack_004.png"); // formerly: images[4]
+  images.p3.attack[4] = loadImage("./assets/blue_attack_005.png"); // formerly: images[5]
 
   // Player 4 sprites: yellow
   images.p4 = {};
-  images.p4.idle = loadImage("./images/yellow_idle_000.png"); // formerly: images[0]
+  images.p4.idle = loadImage("./assets/yellow_idle_000.png"); // formerly: images[0]
   images.p4.attack = [];
-  images.p4.attack[0] = loadImage("./images/yellow_attack_001.png"); // formerly: images[1]
-  images.p4.attack[1] = loadImage("./images/yellow_attack_002.png"); // formerly: images[2]
-  images.p4.attack[2] = loadImage("./images/yellow_attack_003.png"); // formerly: images[3]
-  images.p4.attack[3] = loadImage("./images/yellow_attack_004.png"); // formerly: images[4]
-  images.p4.attack[4] = loadImage("./images/yellow_attack_005.png"); // formerly: images[5]
+  images.p4.attack[0] = loadImage("./assets/yellow_attack_001.png"); // formerly: images[1]
+  images.p4.attack[1] = loadImage("./assets/yellow_attack_002.png"); // formerly: images[2]
+  images.p4.attack[2] = loadImage("./assets/yellow_attack_003.png"); // formerly: images[3]
+  images.p4.attack[3] = loadImage("./assets/yellow_attack_004.png"); // formerly: images[4]
+  images.p4.attack[4] = loadImage("./assets/yellow_attack_005.png"); // formerly: images[5]
 
   // Enemy sprites
   images.enemy = {};
-  images.enemy.idle = loadImage("./images/gray_idle_000.png"); // formerly: npcImage
+  images.enemy.idle = loadImage("./assets/gray_idle_000.png"); // formerly: npcImage
+
+  // title scene
+  images.title = loadImage("./assets/title_scene_000.png");
 }
 
 function setup() {
   createCanvas(1280, 800);
+  textFont("Joystix");
+
   frameRate(60);
   noStroke();
-
   const enemy = initEnemy();
   initPlayer();
 
@@ -169,38 +173,69 @@ function draw() {
 
 // DRAW GAME STATES
 function drawGameStateTitle() {
-  background(100, 100, 100);
+  // background(100, 100, 100);
+  image(images.title, 0, 0);
   push();
+  textFont("Neon Pixel");
   textAlign(CENTER, CENTER);
-  fill("#FFFFFF");
-  noStroke();
-  textSize(65);
-  text("2D BRAWLER", width * 0.5, height * 0.35);
-  textSize(45);
-  text("PRESS SPACE TO START", width * 0.5, height * 0.5);
+  fill("#951BBB");
+  textSize(245);
+  text("Bar-Brawl", width * 0.4, height * 0.15);
+  pop();
+
+  push();
+  fill(255);
+  textSize(35);
+  textAlign(CENTER, CENTER);
+  text("PRESS SPACE TO START", width * 0.5, height * 0.9);
   pop();
 }
 
 function drawGameStateWaiting(p1, p2, p3, p4) {
+  image(images.background1, -500, 0);
   push();
   imageMode(CENTER);
 
   //draw rectangles
-  fill(255, 100, 100);
+  push();
+  const c1 = color(255, 100, 100);
+  c1.setAlpha(50);
+  fill(c1);
   rect(0, 0, width * 0.25, height);
-  fill(100, 255, 100);
+  pop();
+
+  push();
+  const c2 = color(100, 255, 100);
+  c2.setAlpha(50);
+  fill(c2);
   rect(width * 0.25, 0, width * 0.25, height);
-  fill(100, 100, 255);
+  pop();
+
+  push();
+  const c3 = color(100, 100, 255);
+  c3.setAlpha(50);
+  fill(c3);
   rect(width * 0.5, 0, width * 0.25, height);
-  fill(255, 255, 100);
+  pop();
+
+  push();
+  const c4 = color(255, 255, 100);
+  c4.setAlpha(50);
+  fill(c4);
   rect(width * 0.75, 0, width * 0.25, height);
+  pop();
 
   //draw text
+  push();
   fill(0);
   rect(0, 0, width, height * 0.15);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(35);
+  text("PRESS ENTER TO START", width * 0.5, height * 0.9);
+  pop();
+
   standardizeText();
-  fill(0);
-  text("PRESS ENTER TO START", width * 0.5, height * 0.8);
   drawHUD(p1, p2, p3, p4);
 
   if (p1) {
@@ -242,8 +277,15 @@ function drawGameStatePlaying(p1, p2, p3, p4) {
 }
 
 function drawGameStateEnding() {
-  background(100, 0, 0);
+  // background(100, 0, 0);
   //background(100);
+  push();
+  const c1 = color(0);
+  c1.setAlpha(50);
+  fill(c1);
+  rect(0, 0, width, height);
+  pop();
+
   fill(200);
   textSize(48);
   textAlign(CENTER);

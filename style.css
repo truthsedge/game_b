@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'Joystix';
+  src: url('./assets/fonts/joystix-monospace.ttf');
+}
+
+@font-face {
+  font-family: 'Neon Pixel';
+  src: url('./assets/fonts/neon_pixel-7.ttf');
+}
+
+@font-face {
+  font-family: 'Automania';
+  src: url('./assets/fonts/AUTOMANI.TTF');
+}
+
 body {
     margin: 0;
   }
