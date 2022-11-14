@@ -31,6 +31,9 @@ let frameToShow = 0;
 let spawnPoint = [300, 400, 500, 600, 700, 800, 900, 1000];
 // let npcImage;
 
+let dX = 0;
+let dY = 0;
+
 // preload
 // called once from the main preload()
 // use this to load any assets you need for the scene
@@ -58,11 +61,6 @@ export function setup() {
 
   shared_enemies.enemiesData.push(enemy);
 }
-
-// enter
-// called from changeScene() when this scene is entered
-// code that SHOULD rerun every time the scene is entered
-export function enter() {}
 
 // update
 // called from the main draw() loop
@@ -121,16 +119,6 @@ export function draw() {
 
   drawHUD(p1, p2, p3, p4);
 }
-
-// mousePressed
-// called from the main mousePressed() function
-// code that handles mousePressed events
-export function mousePressed() {}
-
-// exit
-// called from changeScene() when this scene is exited
-// code that SHOULD run every time the scene is exited
-export function exit() {}
 
 //keyPressed for attack
 export function keyPressed() {
@@ -341,6 +329,7 @@ function drawPlayerHitbox(p1, p2, p3, p4) {
 // InitEnemy
 function initEnemy() {
   const enemy = {};
+
   enemy.x = random(spawnPoint);
   enemy.y = random(spawnPoint);
   enemy.speed = 5;
@@ -351,10 +340,59 @@ function initEnemy() {
 
 // Draw Enemy
 
+// momentum
+// thrust in the right direction
+//   if (x < targetX) {
+//     dX += 5;
+//   } else {
+//     dX -= 5;
+//   }
+//   // apply speed to position
+//   x += dX;
+
+//   // apply friction to speed
+//   dX *= 0.8;
+
+/**  if (enemy.x < p.x) {
+      dX += 5;
+  } else {
+    dx -= 5;
+  }
+
+  enemy.x += dX
+  }
+  **/
+
 function drawEnemy(enemy) {
+  const p1 = guests.find((p) => p.role === "player1");
+  const p2 = guests.find((p) => p.role === "player2");
+  const p3 = guests.find((p) => p.role === "player3");
+  const p4 = guests.find((p) => p.role === "player4");
+
   push();
   rectMode(CENTER);
   imageMode(CENTER);
+
+  //move enemies to *ideally* closest player
+  //currently moving to P1 only
+  if (enemy.x < p.x) {
+    dX += 2;
+  } else {
+    dX -= 2;
+  }
+
+  enemy.x += dX;
+  dX *= 0.5;
+
+  if (enemy.y < p1.y) {
+    dY += 1.5;
+  } else {
+    dY -= 1.5;
+  }
+
+  enemy.y += dY;
+  dY *= 0.5;
+
   image(images.enemy.idle, enemy.x, enemy.y);
   fill(150, 150, 150, 80);
   rect(enemy.x, enemy.y, 125, 175);
