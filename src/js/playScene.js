@@ -340,34 +340,23 @@ function initEnemy() {
 
 // Draw Enemy
 
-// momentum
-// thrust in the right direction
-//   if (x < targetX) {
-//     dX += 5;
-//   } else {
-//     dX -= 5;
-//   }
-//   // apply speed to position
-//   x += dX;
-
-//   // apply friction to speed
-//   dX *= 0.8;
-
-/**  if (enemy.x < p.x) {
-      dX += 5;
-  } else {
-    dx -= 5;
-  }
-
-  enemy.x += dX
-  }
-  **/
-
 function drawEnemy(enemy) {
   const p1 = guests.find((p) => p.role === "player1");
   const p2 = guests.find((p) => p.role === "player2");
   const p3 = guests.find((p) => p.role === "player3");
   const p4 = guests.find((p) => p.role === "player4");
+
+  // let targetX = guests.reduce((a, b) => {
+  //   let aDiff = Math.abs(a - enemy.x);
+  //   let bDiff = Math.abs(b - enemy.x);
+
+  //   if (aDiff == bDiff) {
+  //     // Choose largest vs smallest (> vs <)
+  //     return a > b ? a : b;
+  //   } else {
+  //     return bDiff < aDiff ? b : a;
+  //   }
+  // });
 
   push();
   rectMode(CENTER);
@@ -375,7 +364,7 @@ function drawEnemy(enemy) {
 
   //move enemies to *ideally* closest player
   //currently moving to P1 only
-  if (enemy.x < p.x) {
+  if (enemy.x < p1.x) {
     dX += 2;
   } else {
     dX -= 2;
