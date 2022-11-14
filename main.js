@@ -33,7 +33,6 @@ let frameToShow = 0;
 
 // Enemy Variables
 let spawnPoint = [300, 400, 500, 600, 700, 800, 900, 1000];
-let enemiesData = [];
 // let npcImage;
 
 // Camera
@@ -43,8 +42,8 @@ let enemiesData = [];
 function preload() {
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
-    "brawler_game_0.0.5",
-    "main_1"
+    "brawler_game_0.0.6",
+    "main"
   );
 
   // Client owned, should be used by client owner
@@ -66,6 +65,10 @@ function preload() {
   shared = partyLoadShared("shared", {
     numEnemiesDefeated: 0, // How many enemies have the player already defeated
     numEnemiesLeft: 10, // How many enemies does the player need to defeat
+  });
+
+  shared_enemies = partyLoadShared("shared_enemies", {
+    enemiesData: [],
   });
 
   preloadImages();
@@ -128,7 +131,7 @@ function setup() {
   const enemy = initEnemy();
   initPlayer();
 
-  enemiesData.push(enemy);
+  shared_enemies.enemiesData.push(enemy);
 }
 
 function draw() {
@@ -234,7 +237,7 @@ function drawGameStatePlaying(p1, p2, p3, p4) {
   //if(p2) drawPlayer(p2);
 
   //drawPlayerHitbox();
-  enemiesData.forEach((enemy) => drawEnemy(enemy));
+  shared_enemies.enemiesData.forEach((enemy) => drawEnemy(enemy));
   pop();
 }
 
@@ -295,7 +298,9 @@ function updateGameStatePlaying(p1, p2, p3, p4) {
   playerAttack(p1, p2, p3, p4);
 
   //defeat all enemies
-  enemiesData = enemiesData.filter((enemy) => enemy.alive);
+  shared_enemies.enemiesData = shared_enemies.enemiesData.filter(
+    (enemy) => enemy.alive
+  );
   enemySpawner();
   //check if player is alive
   //load the next game state
@@ -413,7 +418,9 @@ function playerAttack(p1, p2, p3, p4) {
     playerSpeed = 0; // Prevents the player from being able to move and attack at the same time.
 
     if (frameCount % 60 === 0) {
-      enemiesData.forEach((enemy) => damageEnemy(enemy, p1, p2, p3, p4));
+      shared_enemies.enemiesData.forEach((enemy) =>
+        damageEnemy(enemy, p1, p2, p3, p4)
+      );
       me.isAttacking = false;
       playerSpeed = 10; // Resets players speed back to default value after attacking
     }
@@ -505,7 +512,7 @@ function enemySpawner() {
   if (frameCount % 240 === 0) {
     const enemy = initEnemy();
 
-    enemiesData.push(enemy);
+    shared_enemies.enemiesData.push(enemy);
   }
 }
 
@@ -575,7 +582,61 @@ function drawHUD(p1, p2, p3, p4) {
     text("P3", width * 0.7, height * 0.1);
     text("P4", width * 0.85, height * 0.1);
 
-    drawPlayerHealth();
+    push();
+    textSize(20);
+    if (p1) {
+      text("CONNECTED", width * 0.15, height * 0.04);
+
+      // Draw Player 1 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.12, height * 0.12, 20, 20);
+      ellipse(width * 0.15, height * 0.12, 20, 20);
+      ellipse(width * 0.18, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.15, height * 0.04);
+    }
+    if (p2) {
+      text("CONNECTED", width * 0.3, height * 0.04);
+
+      // Draw Player 2 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.27, height * 0.12, 20, 20);
+      ellipse(width * 0.3, height * 0.12, 20, 20);
+      ellipse(width * 0.33, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.3, height * 0.04);
+    }
+    if (p3) {
+      text("CONNECTED", width * 0.7, height * 0.04);
+
+      // Draw Player 3 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.67, height * 0.12, 20, 20);
+      ellipse(width * 0.7, height * 0.12, 20, 20);
+      ellipse(width * 0.73, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.7, height * 0.04);
+    }
+    if (p4) {
+      text("CONNECTED", width * 0.85, height * 0.04);
+
+      // Draw Player 3 Health
+      push();
+      fill(0, 200, 50);
+      ellipse(width * 0.82, height * 0.12, 20, 20);
+      ellipse(width * 0.85, height * 0.12, 20, 20);
+      ellipse(width * 0.88, height * 0.12, 20, 20);
+      pop();
+    } else {
+      text("NONE", width * 0.85, height * 0.04);
+    }
+    pop();
   }
 
   if (gameState === GAMESTATE_WAITING) {
@@ -590,15 +651,7 @@ function drawHUD(p1, p2, p3, p4) {
     text("P3", width * 0.625, height * 0.1);
     text("P4", width * 0.875, height * 0.1);
 
-    // Draw Player Health
-    push();
     textSize(20);
-    drawPlayerHealth(p1, 0.15, 0.12, 0.15, 0.18);
-    drawPlayerHealth(p2, 0.3, 0.27, 0.3, 0.33);
-    drawPlayerHealth(p3, 0.7, 0.67, 0.7, 0.73);
-    drawPlayerHealth(p4, 0.85, 0.82, 0.85, 0.88);
-    pop();
-
     // Display Player 1's connection status
     if (p1) {
       text("CONNECTED", width * 0.125, height * 0.04);
@@ -624,21 +677,6 @@ function drawHUD(p1, p2, p3, p4) {
       text("NONE", width * 0.875, height * 0.04);
     }
     pop();
-  }
-}
-
-function drawPlayerHealth(p, xWords, x1, x2, x3) {
-  if (p) {
-    text("CONNECTED", width * xWords, height * 0.04);
-
-    push();
-    fill(0, 200, 50);
-    ellipse(width * x1, height * 0.12, 20, 20);
-    ellipse(width * x2, height * 0.12, 20, 20);
-    ellipse(width * x3, height * 0.12, 20, 20);
-    pop();
-  } else {
-    text("NONE", width * xWords, height * 0.04);
   }
 }
 
