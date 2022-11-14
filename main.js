@@ -355,7 +355,7 @@ function drawPlayer(p, pImg) {
     if (p.isAttacking === true) {
       if (p.isMirrored === false) {
         push();
-        // imageMode(CENTER);
+        imageMode(CENTER); // Makes sure the animation plays in the players current location.
         image(pImg.attack[frameToShow], p.x, p.y); //check images
 
         // only change position and "frame to show"
@@ -551,6 +551,7 @@ function keyPressed() {
   } else if (keyCode === ESCAPE) {
     if (gameState === GAMESTATE_ENDING) {
       //gameState = GAMESTATE_TITLE;
+      shared.numEnemiesDefeated = 0; //  Initializes the number enemies defated to zero so that the game can restart properly.
       location.reload();
     }
   }
