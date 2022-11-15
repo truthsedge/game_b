@@ -56,8 +56,8 @@ export function setup() {
   frameRate(60);
   noStroke();
 
-  const enemy = initEnemy();
   initPlayer();
+  const enemy = initEnemy();
 
   shared_enemies.enemiesData.push(enemy);
 }
@@ -327,8 +327,7 @@ function drawPlayerHitbox(p1, p2, p3, p4) {
   }
 }
 
-//array of current players
-let currentPlayers = [];
+let currentPlayers;
 
 // InitEnemy
 function initEnemy() {
@@ -342,12 +341,18 @@ function initEnemy() {
   enemy.target = random(currentPlayers);
 
   console.log(enemy.target);
+  // console.log(enemy.target.x);
+
+  //current problem is currentPlayers[] and enemy.Target
+  //are either empty or undefined at start...
+  //unsure how to initialize
 
   return enemy;
 }
 
 function updateCurrentPlayers() {
   currentPlayers = guests.filter((p) => p.role !== "observer");
+  console.log(currentPlayers);
 }
 
 // Draw Enemy
@@ -355,7 +360,8 @@ function updateCurrentPlayers() {
 function drawEnemy(enemy) {
   const p1 = guests.find((p) => p.role === "player1");
 
-  // first trial of declaring targetPlayer... it should not be in draw()
+  // first trial of declaring targetPlayer... it should not be in draw().
+  // Kept because it didn't read as undefined unlike it is now.
   // const currentPlayers = guests.filter((p) => p.role !== "observer");
   // const targetPlayer = pickTargetPlayer(currentPlayers);
 
