@@ -11,6 +11,7 @@ let gameState = GAMESTATE_TITLE;
 let locationX = 1000;
 let locationY = 500;
 let playerSpeed = 10;
+
 //let isAttacking = false;
 //let isMirrored = false;
 
@@ -53,8 +54,12 @@ function preload() {
     locationY: 500,
     x: 1000,
     y: 500,
+    playerHealth: 6,
     isMirrored: false,
     isAttacking: false,
+    isBlocking: false,
+    isAlive: true,
+    areAllPlayerDead: false,
     camX: 0,
     camY: 0,
   });
@@ -589,10 +594,66 @@ function drawHUD(p1, p2, p3, p4) {
 
       // Draw Player 1 Health
       push();
+      rectMode(CENTER);
+      fill(0, 255, 0);
+      if (me.playerHealth === 6) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (me.playerHealth === 5) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.185, height * 0.12, 10, 20);
+      }
+
+      if (me.playerHealth === 4) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (me.playerHealth === 3) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.155, height * 0.12, 10, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (me.playerHealth === 2) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (me.playerHealth === 1) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.125, height * 0.12, 10, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (me.playerHealth === 0) {
+        fill(255, 0, 0);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      pop();
+
+      push();
       fill(0, 200, 50);
-      ellipse(width * 0.12, height * 0.12, 20, 20);
-      ellipse(width * 0.15, height * 0.12, 20, 20);
-      ellipse(width * 0.18, height * 0.12, 20, 20);
+      //ellipse(width * 0.12, height * 0.12, 20, 20);
+      //ellipse(width * 0.15, height * 0.12, 20, 20);
+      //ellipse(width * 0.18, height * 0.12, 20, 20);
       pop();
     } else {
       text("NONE", width * 0.15, height * 0.04);
@@ -709,7 +770,9 @@ function rangeNoise(min, max, a = 0, b = 0, c = 0) {
   return map(noise(a, b, c), 0, 0.75, min, max);
 }
 
-function mousePressed() {}
+function mousePressed() {
+  me.playerHealth -= constrain(me.playerHealth, 0, 1);
+}
 
 // MULTIPLAYER
 function assignObserversToRoles() {
