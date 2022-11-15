@@ -44,7 +44,7 @@ function preload() {
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
     "brawler_game_0.0.6",
-    "main"
+    "main_1"
   );
 
   // Client owned, should be used by client owner
@@ -299,8 +299,9 @@ function updateGameStateWaiting(p1, p2, p3, p4) {
 }
 
 function updateGameStatePlaying(p1, p2, p3, p4) {
-  movePlayer(p1, p2, p3, p4);
-  playerAttack(p1, p2, p3, p4);
+  updatePlayerStatus(p1, p2, p3, p4);
+  //movePlayer(p1, p2, p3, p4);
+  //playerAttack(p1, p2, p3, p4);
 
   //defeat all enemies
   shared_enemies.enemiesData = shared_enemies.enemiesData.filter(
@@ -448,6 +449,31 @@ function drawPlayerHitbox(p1, p2, p3, p4) {
   }
 }
 
+function updatePlayerStatus(p1, p2, p3, p4) {
+  // First check to see if the player is alive. If so, enable abilities
+  checkIfPlayerIsAlive(p1, p2, p3, p4);
+
+  if (me.isAlive === true) {
+    //playerBlocking(p1, p2, p3, p4);
+    movePlayer(p1, p2, p3, p4);
+    playerAttack(p1, p2, p3, p4);
+    //movement
+    //attack
+    //reviving teammates
+  }
+}
+
+function checkIfPlayerIsAlive(p1, p2, p3, p4) {
+  // Check the player's health value and determines if the player isAlive or no
+  if (me.playerHealth > 0) {
+    me.isAlive = true;
+    fill(0, 255, 0);
+  } else {
+    me.isAlive = false;
+    fill(255, 0, 0);
+  }
+}
+
 // ENEMY FUNCTIONS
 
 // InitEnemy
@@ -592,68 +618,68 @@ function drawHUD(p1, p2, p3, p4) {
     if (p1) {
       text("CONNECTED", width * 0.15, height * 0.04);
 
-      // Draw Player 1 Health
       push();
       rectMode(CENTER);
-      fill(0, 255, 0);
-      if (me.playerHealth === 6) {
+      if (p1.isAlive === true) {
+        // Draw Player 1 Health using primitive shapes. Should replace with unique art at some point.
+
+        fill(0, 255, 0);
+        if (p1.playerHealth === 6) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p1.playerHealth === 5) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.185, height * 0.12, 10, 20);
+        }
+
+        if (p1.playerHealth === 4) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p1.playerHealth === 3) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.155, height * 0.12, 10, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p1.playerHealth === 2) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p1.playerHealth === 1) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.125, height * 0.12, 10, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p1.playerHealth === 0) {
+          fill(255, 0, 0);
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+      } else {
+        fill(150);
         rect(width * 0.12, height * 0.12, 20);
         rect(width * 0.15, height * 0.12, 20);
         rect(width * 0.18, height * 0.12, 20);
       }
-
-      if (me.playerHealth === 5) {
-        rect(width * 0.12, height * 0.12, 20);
-        rect(width * 0.15, height * 0.12, 20);
-        rect(width * 0.18, height * 0.12, 20);
-        fill(255, 0, 0);
-        rect(width * 0.185, height * 0.12, 10, 20);
-      }
-
-      if (me.playerHealth === 4) {
-        rect(width * 0.12, height * 0.12, 20);
-        rect(width * 0.15, height * 0.12, 20);
-        fill(255, 0, 0);
-        rect(width * 0.18, height * 0.12, 20);
-      }
-
-      if (me.playerHealth === 3) {
-        rect(width * 0.12, height * 0.12, 20);
-        rect(width * 0.15, height * 0.12, 20);
-        fill(255, 0, 0);
-        rect(width * 0.155, height * 0.12, 10, 20);
-        rect(width * 0.18, height * 0.12, 20);
-      }
-
-      if (me.playerHealth === 2) {
-        rect(width * 0.12, height * 0.12, 20);
-        fill(255, 0, 0);
-        rect(width * 0.15, height * 0.12, 20);
-        rect(width * 0.18, height * 0.12, 20);
-      }
-
-      if (me.playerHealth === 1) {
-        rect(width * 0.12, height * 0.12, 20);
-        fill(255, 0, 0);
-        rect(width * 0.125, height * 0.12, 10, 20);
-        rect(width * 0.15, height * 0.12, 20);
-        rect(width * 0.18, height * 0.12, 20);
-      }
-
-      if (me.playerHealth === 0) {
-        fill(255, 0, 0);
-        rect(width * 0.12, height * 0.12, 20);
-        rect(width * 0.15, height * 0.12, 20);
-        rect(width * 0.18, height * 0.12, 20);
-      }
-
-      pop();
-
-      push();
-      fill(0, 200, 50);
-      //ellipse(width * 0.12, height * 0.12, 20, 20);
-      //ellipse(width * 0.15, height * 0.12, 20, 20);
-      //ellipse(width * 0.18, height * 0.12, 20, 20);
       pop();
     } else {
       text("NONE", width * 0.15, height * 0.04);
@@ -662,12 +688,74 @@ function drawHUD(p1, p2, p3, p4) {
       text("CONNECTED", width * 0.3, height * 0.04);
 
       // Draw Player 2 Health
+
       push();
-      fill(0, 200, 50);
-      ellipse(width * 0.27, height * 0.12, 20, 20);
-      ellipse(width * 0.3, height * 0.12, 20, 20);
-      ellipse(width * 0.33, height * 0.12, 20, 20);
+
+      translate(width * 0.15, 0);
+      rectMode(CENTER);
+
+      if (p2.isAlive === true) {
+        fill(0, 255, 0);
+        if (p2.playerHealth === 6) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p2.playerHealth === 5) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.185, height * 0.12, 10, 20);
+        }
+
+        if (p2.playerHealth === 4) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p2.playerHealth === 3) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.155, height * 0.12, 10, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p2.playerHealth === 2) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p2.playerHealth === 1) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.125, height * 0.12, 10, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p2.playerHealth === 0) {
+          fill(255, 0, 0);
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+      } else {
+        fill(150);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
       pop();
+      //ellipse(width * 0.27, height * 0.12, 20, 20);
+      //ellipse(width * 0.3, height * 0.12, 20, 20);
+      //ellipse(width * 0.33, height * 0.12, 20, 20);
     } else {
       text("NONE", width * 0.3, height * 0.04);
     }
@@ -675,11 +763,70 @@ function drawHUD(p1, p2, p3, p4) {
       text("CONNECTED", width * 0.7, height * 0.04);
 
       // Draw Player 3 Health
+
       push();
-      fill(0, 200, 50);
-      ellipse(width * 0.67, height * 0.12, 20, 20);
-      ellipse(width * 0.7, height * 0.12, 20, 20);
-      ellipse(width * 0.73, height * 0.12, 20, 20);
+
+      translate(width * 0.55, 0);
+      rectMode(CENTER);
+
+      if (p3.isAlive === true) {
+        fill(0, 255, 0);
+        if (p3.playerHealth === 6) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p3.playerHealth === 5) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.185, height * 0.12, 10, 20);
+        }
+
+        if (p3.playerHealth === 4) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p3.playerHealth === 3) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.155, height * 0.12, 10, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p3.playerHealth === 2) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p3.playerHealth === 1) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.125, height * 0.12, 10, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p3.playerHealth === 0) {
+          fill(255, 0, 0);
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+      } else {
+        fill(150);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
       pop();
     } else {
       text("NONE", width * 0.7, height * 0.04);
@@ -687,12 +834,71 @@ function drawHUD(p1, p2, p3, p4) {
     if (p4) {
       text("CONNECTED", width * 0.85, height * 0.04);
 
-      // Draw Player 3 Health
+      // Draw Player 4 Health
+
       push();
-      fill(0, 200, 50);
-      ellipse(width * 0.82, height * 0.12, 20, 20);
-      ellipse(width * 0.85, height * 0.12, 20, 20);
-      ellipse(width * 0.88, height * 0.12, 20, 20);
+
+      translate(width * 0.7, 0);
+      rectMode(CENTER);
+
+      if (p4.isAlive === true) {
+        fill(0, 255, 0);
+        if (p4.playerHealth === 6) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p4.playerHealth === 5) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.185, height * 0.12, 10, 20);
+        }
+
+        if (p4.playerHealth === 4) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p4.playerHealth === 3) {
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.155, height * 0.12, 10, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p4.playerHealth === 2) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p4.playerHealth === 1) {
+          rect(width * 0.12, height * 0.12, 20);
+          fill(255, 0, 0);
+          rect(width * 0.125, height * 0.12, 10, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+
+        if (p4.playerHealth === 0) {
+          fill(255, 0, 0);
+          rect(width * 0.12, height * 0.12, 20);
+          rect(width * 0.15, height * 0.12, 20);
+          rect(width * 0.18, height * 0.12, 20);
+        }
+      } else {
+        fill(150);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
       pop();
     } else {
       text("NONE", width * 0.85, height * 0.04);
