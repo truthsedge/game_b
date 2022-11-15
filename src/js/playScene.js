@@ -327,52 +327,48 @@ function drawPlayerHitbox(p1, p2, p3, p4) {
   }
 }
 
+//array of current players
+let currentPlayers = [];
+
 // InitEnemy
 function initEnemy() {
   const enemy = {};
+  updateCurrentPlayers();
 
   enemy.x = random(spawnPoint);
   enemy.y = random(spawnPoint);
   enemy.speed = 5;
   enemy.alive = true;
+  enemy.target = random(currentPlayers);
+
+  console.log(enemy.target);
 
   return enemy;
+}
+
+function updateCurrentPlayers() {
+  currentPlayers = guests.filter((p) => p.role !== "observer");
 }
 
 // Draw Enemy
 
 function drawEnemy(enemy) {
   const p1 = guests.find((p) => p.role === "player1");
-  const p2 = guests.find((p) => p.role === "player2");
-  const p3 = guests.find((p) => p.role === "player3");
-  const p4 = guests.find((p) => p.role === "player4");
 
-  // Was trying to sort guests.x to find the one closest to enemy.x for a targetX value
-  // targetX is meant to replace p1.x down below
-  // let targetX = guests.reduce((a, b) => {
-  //   let aDiff = Math.abs(a - enemy.x);
-  //   let bDiff = Math.abs(b - enemy.x);
-
-  //   if (aDiff == bDiff) {
-  //     // Choose largest vs smallest (> vs <)
-  //     return a > b ? a : b;
-  //   } else {
-  //     return bDiff < aDiff ? b : a;
-  //   }
-  // });
+  // first trial of declaring targetPlayer... it should not be in draw()
+  // const currentPlayers = guests.filter((p) => p.role !== "observer");
+  // const targetPlayer = pickTargetPlayer(currentPlayers);
 
   push();
   rectMode(CENTER);
   imageMode(CENTER);
 
-  //move enemies to *ideally* closest player
-  //currently moving to P1 only
+  //move enemies to targetPlayer
   if (enemy.x < p1.x) {
     dX += 2;
   } else {
     dX -= 2;
   }
-
   enemy.x += dX;
   dX *= 0.5;
 
