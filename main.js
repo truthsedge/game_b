@@ -19,6 +19,7 @@ let playerSpeed = 10;
 let player1, player2, player3, player4;
 let me, guests;
 let readyStatus;
+let areAllPlayerDead = false;
 
 // GAME FEEL / JUICE
 let cameraShakeAmount = 0;
@@ -59,7 +60,6 @@ function preload() {
     isAttacking: false,
     isBlocking: false,
     isAlive: true,
-    areAllPlayerDead: false,
     camX: 0,
     camY: 0,
   });
@@ -247,12 +247,20 @@ function drawGameStatePlaying(p1, p2, p3, p4) {
 }
 
 function drawGameStateEnding() {
-  background(100, 0, 0);
-  //background(100);
-  fill(200);
-  textSize(48);
-  textAlign(CENTER);
-  text("LEVEL COMPLETE", width * 0.5, height * 0.5);
+  if (areAllPlayerDead === true) {
+    background(0);
+    fill(255);
+    textSize(40);
+    textAlign(CENTER);
+    text("Game Over", width * 0.5, height * 0.5);
+  } else {
+    background(100, 0, 0);
+    //background(100);
+    fill(200);
+    textSize(48);
+    textAlign(CENTER);
+    text("LEVEL COMPLETE", width * 0.5, height * 0.5);
+  }
 
   text("PRESS 'ESC' TO RETRY", width * 0.25, height * 0.95);
 }
@@ -308,8 +316,30 @@ function updateGameStatePlaying(p1, p2, p3, p4) {
     (enemy) => enemy.alive
   );
   enemySpawner();
-  //check if player is alive
+
+  let numberOfPlayersConnected = 0;
+  let numberOfNotAlive = 0;
+
+  // Check how many players are in the game.
+  if (p1) numberOfPlayersConnected = 1;
+  if (p2) numberOfPlayersConnected += 1;
+  if (p3) numberOfPlayersConnected += 1;
+  if (p4) numberOfPlayersConnected += 1;
+  // Check how many players are still alive
+  if (p1.isAlive === false) numberOfNotAlive += 1;
+  if (p2?.isAlive === false) numberOfNotAlive += 1;
+  if (p3?.isAlive === false) numberOfNotAlive += 1;
+  if (p4?.isAlive === false) numberOfNotAlive += 1;
+
+  // If all connected players are deaad, then end the game
+  if (numberOfPlayersConnected === numberOfNotAlive) {
+    areAllPlayerDead = true;
+  }
   //load the next game state
+
+  if (areAllPlayerDead === true) {
+    gameState = GAMESTATE_ENDING;
+  }
 
   if (shared.numEnemiesDefeated >= 10) {
     gameState = GAMESTATE_ENDING;
@@ -590,7 +620,7 @@ function keyPressed() {
     if (gameState === GAMESTATE_ENDING) {
       //gameState = GAMESTATE_TITLE;
       shared.numEnemiesDefeated = 0; //  Initializes the number enemies defated to zero so that the game can restart properly.
-      location.reload();
+      location.reload(); //reloads for a single player, but not all
     }
   }
 }
@@ -977,7 +1007,9 @@ function rangeNoise(min, max, a = 0, b = 0, c = 0) {
 }
 
 function mousePressed() {
-  me.playerHealth -= constrain(me.playerHealth, 0, 1);
+  if (gameState === GAMESTATE_PLAYING) {
+    me.playerHealth -= constrain(me.playerHealth, 0, 1);
+  }
 }
 
 // MULTIPLAYER
