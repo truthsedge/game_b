@@ -17,6 +17,8 @@ import {
 let shared;
 let shared_enemies;
 
+let areAllPlayerDead = false;
+
 // Player variables. Should probably change their scope later.
 let playerSpeed = 10;
 
@@ -72,8 +74,9 @@ export function update() {
   const p3 = guests.find((p) => p.role === "player3");
   const p4 = guests.find((p) => p.role === "player4");
 
-  movePlayer(p1, p2, p3, p4);
-  playerAttack(p1, p2, p3, p4);
+  updatePlayerStatus(p1, p2, p3, p4);
+  // movePlayer(p1, p2, p3, p4);
+  // playerAttack(p1, p2, p3, p4);
   // damagePlayer();
 
   //defeat all enemies
@@ -82,7 +85,30 @@ export function update() {
   );
   enemySpawner();
 
+  let numberOfPlayersConnected = 0;
+  let numberOfNotAlive = 0;
+
+  // Check how many players are in the game.
+  if (p1) numberOfPlayersConnected = 1;
+  if (p2) numberOfPlayersConnected += 1;
+  if (p3) numberOfPlayersConnected += 1;
+  if (p4) numberOfPlayersConnected += 1;
+  // Check how many players are still alive
+  if (p1.isAlive === false) numberOfNotAlive += 1;
+  if (p2?.isAlive === false) numberOfNotAlive += 1;
+  if (p3?.isAlive === false) numberOfNotAlive += 1;
+  if (p4?.isAlive === false) numberOfNotAlive += 1;
+
+  // If all connected players are deaad, then end the game
+  if (numberOfPlayersConnected === numberOfNotAlive) {
+    areAllPlayerDead = true;
+  }
+
   if (shared.numEnemiesDefeated >= 10) {
+    changeScene(scenes.end);
+  }
+
+  if (areAllPlayerDead === true) {
     changeScene(scenes.end);
   }
 }
@@ -129,6 +155,10 @@ export function keyPressed() {
   }
 }
 
+export function mousePressed() {
+  me.playerHealth -= constrain(me.playerHealth, 0, 1);
+}
+
 export function drawHUD(p1, p2, p3, p4) {
   standardizeText();
   text(
@@ -150,12 +180,68 @@ export function drawHUD(p1, p2, p3, p4) {
   if (p1) {
     text("CONNECTED", width * 0.15, height * 0.04);
 
-    // Draw Player 1 Health
     push();
-    fill(0, 200, 50);
-    ellipse(width * 0.12, height * 0.12, 20, 20);
-    ellipse(width * 0.15, height * 0.12, 20, 20);
-    ellipse(width * 0.18, height * 0.12, 20, 20);
+    rectMode(CENTER);
+    if (p1.isAlive === true) {
+      // Draw Player 1 Health using primitive shapes. Should replace with unique art at some point.
+
+      fill(0, 255, 0);
+      if (p1.playerHealth === 6) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p1.playerHealth === 5) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.185, height * 0.12, 10, 20);
+      }
+
+      if (p1.playerHealth === 4) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p1.playerHealth === 3) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.155, height * 0.12, 10, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p1.playerHealth === 2) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p1.playerHealth === 1) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.125, height * 0.12, 10, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p1.playerHealth === 0) {
+        fill(255, 0, 0);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+    } else {
+      fill(150);
+      rect(width * 0.12, height * 0.12, 20);
+      rect(width * 0.15, height * 0.12, 20);
+      rect(width * 0.18, height * 0.12, 20);
+    }
     pop();
   } else {
     text("NONE", width * 0.15, height * 0.04);
@@ -164,12 +250,74 @@ export function drawHUD(p1, p2, p3, p4) {
     text("CONNECTED", width * 0.3, height * 0.04);
 
     // Draw Player 2 Health
+
     push();
-    fill(0, 200, 50);
-    ellipse(width * 0.27, height * 0.12, 20, 20);
-    ellipse(width * 0.3, height * 0.12, 20, 20);
-    ellipse(width * 0.33, height * 0.12, 20, 20);
+
+    translate(width * 0.15, 0);
+    rectMode(CENTER);
+
+    if (p2.isAlive === true) {
+      fill(0, 255, 0);
+      if (p2.playerHealth === 6) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p2.playerHealth === 5) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.185, height * 0.12, 10, 20);
+      }
+
+      if (p2.playerHealth === 4) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p2.playerHealth === 3) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.155, height * 0.12, 10, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p2.playerHealth === 2) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p2.playerHealth === 1) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.125, height * 0.12, 10, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p2.playerHealth === 0) {
+        fill(255, 0, 0);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+    } else {
+      fill(150);
+      rect(width * 0.12, height * 0.12, 20);
+      rect(width * 0.15, height * 0.12, 20);
+      rect(width * 0.18, height * 0.12, 20);
+    }
     pop();
+    //ellipse(width * 0.27, height * 0.12, 20, 20);
+    //ellipse(width * 0.3, height * 0.12, 20, 20);
+    //ellipse(width * 0.33, height * 0.12, 20, 20);
   } else {
     text("NONE", width * 0.3, height * 0.04);
   }
@@ -177,11 +325,70 @@ export function drawHUD(p1, p2, p3, p4) {
     text("CONNECTED", width * 0.7, height * 0.04);
 
     // Draw Player 3 Health
+
     push();
-    fill(0, 200, 50);
-    ellipse(width * 0.67, height * 0.12, 20, 20);
-    ellipse(width * 0.7, height * 0.12, 20, 20);
-    ellipse(width * 0.73, height * 0.12, 20, 20);
+
+    translate(width * 0.55, 0);
+    rectMode(CENTER);
+
+    if (p3.isAlive === true) {
+      fill(0, 255, 0);
+      if (p3.playerHealth === 6) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p3.playerHealth === 5) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.185, height * 0.12, 10, 20);
+      }
+
+      if (p3.playerHealth === 4) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p3.playerHealth === 3) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.155, height * 0.12, 10, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p3.playerHealth === 2) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p3.playerHealth === 1) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.125, height * 0.12, 10, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p3.playerHealth === 0) {
+        fill(255, 0, 0);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+    } else {
+      fill(150);
+      rect(width * 0.12, height * 0.12, 20);
+      rect(width * 0.15, height * 0.12, 20);
+      rect(width * 0.18, height * 0.12, 20);
+    }
     pop();
   } else {
     text("NONE", width * 0.7, height * 0.04);
@@ -189,12 +396,71 @@ export function drawHUD(p1, p2, p3, p4) {
   if (p4) {
     text("CONNECTED", width * 0.85, height * 0.04);
 
-    // Draw Player 3 Health
+    // Draw Player 4 Health
+
     push();
-    fill(0, 200, 50);
-    ellipse(width * 0.82, height * 0.12, 20, 20);
-    ellipse(width * 0.85, height * 0.12, 20, 20);
-    ellipse(width * 0.88, height * 0.12, 20, 20);
+
+    translate(width * 0.7, 0);
+    rectMode(CENTER);
+
+    if (p4.isAlive === true) {
+      fill(0, 255, 0);
+      if (p4.playerHealth === 6) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p4.playerHealth === 5) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.185, height * 0.12, 10, 20);
+      }
+
+      if (p4.playerHealth === 4) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p4.playerHealth === 3) {
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.155, height * 0.12, 10, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p4.playerHealth === 2) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p4.playerHealth === 1) {
+        rect(width * 0.12, height * 0.12, 20);
+        fill(255, 0, 0);
+        rect(width * 0.125, height * 0.12, 10, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+
+      if (p4.playerHealth === 0) {
+        fill(255, 0, 0);
+        rect(width * 0.12, height * 0.12, 20);
+        rect(width * 0.15, height * 0.12, 20);
+        rect(width * 0.18, height * 0.12, 20);
+      }
+    } else {
+      fill(150);
+      rect(width * 0.12, height * 0.12, 20);
+      rect(width * 0.15, height * 0.12, 20);
+      rect(width * 0.18, height * 0.12, 20);
+    }
     pop();
   } else {
     text("NONE", width * 0.85, height * 0.04);
@@ -327,7 +593,47 @@ function drawPlayerHitbox(p1, p2, p3, p4) {
   }
 }
 
+function playerBlocking(p1, p2, p3, p4) {
+  if (keyIsDown(SHIFT) /*shift*/) {
+    if (me.isBlocking === false) {
+      me.isBlocking = true;
+      //me.playerSpeed = 0; // if the player is blocking, prevent them from moving
+      print("BLOCKING");
+    }
+  } else {
+    if (me.isBlocking === true) {
+      me.isBlocking = false;
+      //me.playerSpeed = ; // if player stops blocking, allow them to move
+      print("NOT BLOCKING");
+    }
+  }
+}
+
+function updatePlayerStatus(p1, p2, p3, p4) {
+  // First check to see if the player is alive. If so, enable abilities
+  checkIfPlayerIsAlive(p1, p2, p3, p4);
+
+  if (me.isAlive === true) {
+    movePlayer(p1, p2, p3, p4);
+    playerAttack(p1, p2, p3, p4);
+    playerBlocking(p1, p2, p3, p4);
+    //reviving teammates
+  }
+}
+
+function checkIfPlayerIsAlive(p1, p2, p3, p4) {
+  // Check the player's health value and determines if the player isAlive or no
+  if (me.playerHealth > 0) {
+    me.isAlive = true;
+    fill(0, 255, 0);
+  } else {
+    me.isAlive = false;
+    fill(255, 0, 0);
+  }
+}
+
 let currentPlayers;
+//Enemy Function
 
 // InitEnemy
 function initEnemy() {

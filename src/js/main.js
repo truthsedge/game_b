@@ -65,11 +65,14 @@ function setup() {
     locationY: 500,
     x: 1000,
     y: 500,
+    playerHealth: 6,
     isMirrored: false,
     isAttacking: false,
+    isBlocking: false,
+    isAlive: true,
+    areAllPlayerDead: false,
     camX: 0,
     camY: 0,
-    lives: 3,
   });
 
   // note: object.values() returns an array of a given objects own property values
