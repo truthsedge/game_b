@@ -5,28 +5,33 @@
  *
  */
 
-import { changeScene, scenes } from "./main.js";
+import { changeScene, scenes, images } from "./main.js";
 
 // draw
 // called from the main draw() loop
 // code that draws the scene
 // should NOT have update code in it
 export function draw() {
-  background(100, 100, 100);
+  // background(100, 100, 100);
+  image(images.title, 0, 0);
   push();
+  textFont("Neon Pixel");
   textAlign(CENTER, CENTER);
-  fill("#FFFFFF");
-  noStroke();
-  textSize(65);
-  text("2D BRAWLER", width * 0.5, height * 0.35);
-  textSize(45);
-  text("PRESS SPACE TO START", width * 0.5, height * 0.5);
+  fill("#951BBB");
+  textSize(245);
+  text("Bar-Brawl", width * 0.4, height * 0.15);
+  pop();
+
+  push();
+  fill(255);
+  textSize(35);
+  textAlign(CENTER, CENTER);
+  text("PRESS SPACE TO START", width * 0.5, height * 0.9);
   pop();
 }
 
-// mousePressed
-// called from the main mousePressed() function
-// code that handles mousePressed events
-export function mousePressed() {
-  changeScene(scenes.lobby);
+export function keyPressed() {
+  if (keyCode === 32 /*Enter Key*/) {
+    changeScene(scenes.lobby);
+  }
 }

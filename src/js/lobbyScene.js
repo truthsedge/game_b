@@ -18,25 +18,50 @@ export function draw() {
   const p3 = guests.find((p) => p.role === "player3");
   const p4 = guests.find((p) => p.role === "player4");
 
+  image(images.background1, -500, 0);
   push();
   imageMode(CENTER);
 
   //draw rectangles
-  fill(255, 100, 100);
+  push();
+  const c1 = color(255, 100, 100);
+  c1.setAlpha(50);
+  fill(c1);
   rect(0, 0, width * 0.25, height);
-  fill(100, 255, 100);
+  pop();
+
+  push();
+  const c2 = color(100, 255, 100);
+  c2.setAlpha(50);
+  fill(c2);
   rect(width * 0.25, 0, width * 0.25, height);
-  fill(100, 100, 255);
+  pop();
+
+  push();
+  const c3 = color(100, 100, 255);
+  c3.setAlpha(50);
+  fill(c3);
   rect(width * 0.5, 0, width * 0.25, height);
-  fill(255, 255, 100);
+  pop();
+
+  push();
+  const c4 = color(255, 255, 100);
+  c4.setAlpha(50);
+  fill(c4);
   rect(width * 0.75, 0, width * 0.25, height);
+  pop();
 
   //draw text
+  push();
   fill(0);
   rect(0, 0, width, height * 0.15);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(35);
+  text("PRESS ENTER TO START", width * 0.5, height * 0.9);
+  pop();
+
   standardizeText();
-  fill(0);
-  text("PRESS ENTER TO START", width * 0.5, height * 0.8);
   drawHUD(p1, p2, p3, p4);
 
   if (p1) {
@@ -94,9 +119,8 @@ export function drawHUD(p1, p2, p3, p4) {
   pop();
 }
 
-// mousePressed
-// called from the main mousePressed() function
-// code that handles mousePressed events
-export function mousePressed() {
-  changeScene(scenes.play);
+export function keyPressed() {
+  if (keyCode === 13 /*Enter Key*/) {
+    changeScene(scenes.play);
+  }
 }

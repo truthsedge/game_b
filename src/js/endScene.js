@@ -11,8 +11,15 @@ import { changeScene, scenes } from "./main.js";
 // code that draws the scene
 // should NOT have update code in it
 export function draw() {
-  background(100, 0, 0);
+  // background(100, 0, 0);
   //background(100);
+  push();
+  const c1 = color(0);
+  c1.setAlpha(50);
+  fill(c1);
+  rect(0, 0, width, height);
+  pop();
+
   fill(200);
   textSize(48);
   textAlign(CENTER);
