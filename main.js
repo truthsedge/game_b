@@ -263,6 +263,11 @@ function drawGameStateEnding() {
   }
 
   text("PRESS 'ESC' TO RETRY", width * 0.25, height * 0.95);
+
+  // Delay and then restart the game.
+  if (frameCount % 480 === 0) {
+    location.reload();
+  }
 }
 
 // UPDATE GAME STATES
@@ -479,16 +484,31 @@ function drawPlayerHitbox(p1, p2, p3, p4) {
   }
 }
 
+function playerBlocking(p1, p2, p3, p4) {
+  if (keyIsDown(SHIFT) /*shift*/) {
+    if (me.isBlocking === false) {
+      me.isBlocking = true;
+      //me.playerSpeed = 0; // if the player is blocking, prevent them from moving
+      print("BLOCKING");
+    }
+  } else {
+    if (me.isBlocking === true) {
+      me.isBlocking = false;
+      //me.playerSpeed = ; // if player stops blocking, allow them to move
+      print("NOT BLOCKING");
+    }
+  }
+}
+
 function updatePlayerStatus(p1, p2, p3, p4) {
   // First check to see if the player is alive. If so, enable abilities
   checkIfPlayerIsAlive(p1, p2, p3, p4);
 
   if (me.isAlive === true) {
-    //playerBlocking(p1, p2, p3, p4);
     movePlayer(p1, p2, p3, p4);
     playerAttack(p1, p2, p3, p4);
-    //movement
-    //attack
+    playerBlocking(p1, p2, p3, p4);
+
     //reviving teammates
   }
 }
